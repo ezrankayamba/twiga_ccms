@@ -1,0 +1,63 @@
+button {
+  padding: 0.5em 0.7em;
+  font-size: 0.8em;
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 0.4em;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+/* Ripple effect */
+.ripple {
+  background-position: center;
+  transition: background 0.8s;
+}
+.ripple:hover {
+  background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%)
+    center/15000%;
+}
+.ripple:active {
+  background-color: #6eb9f7;
+  background-size: 100%;
+  transition: background 0s;
+}
+.d-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.m-1 {
+  margin: 0.4em;
+}
+.ml-1 {
+  margin-left: 0.4em;
+}
+.mr-1 {
+  margin-right: 0.4em;
+}
+.mt-1 {
+  margin-top: 0.4em;
+}
+.mb-1 {
+  margin-bottom: 0.4em;
+}
+
+.p-1 {
+  padding: 0.4em;
+}
+.pl-1 {
+  padding-left: 0.4em;
+}
+.pr-1 {
+  padding-right: 0.4em;
+}
+.pt-1 {
+  padding-top: 0.4em;
+}
+.pb-1 {
+  padding-bottom: 0.4em;
+}
