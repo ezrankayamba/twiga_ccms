@@ -1,0 +1,16 @@
+#root {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 0.4em;
+}
+.container .content {
+  width: 80vw;
+  margin: 0 auto;
+  height: 100%;
+  position: relative;
+}
+.page-content {
+  padding: 0 0.4em;
+}

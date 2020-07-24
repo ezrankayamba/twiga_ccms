@@ -1,0 +1,128 @@
+import { gql } from "apollo-boost";
+
+export const COMPLAINTS = gql`
+  query fetchComplaints {
+    complaints {
+      id
+      clientName
+      openDate
+      status
+      details
+      rca
+      actionPlan
+      results
+      financialImpact
+      costCenter
+      responsiblePerson
+      dueDate
+      closeDate
+      assignedTo {
+        id
+        username
+      }
+      nature {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const GET_COMPLAINT = gql`
+  query getComplaint($id: ID!) {
+    complaint(id: $id) {
+      id
+      clientName
+      openDate
+      status
+      details
+      rca
+      actionPlan
+      results
+      financialImpact
+      costCenter
+      responsiblePerson
+      dueDate
+      closeDate
+      nature {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const NATURES = gql`
+  query getNatures {
+    natures {
+      id
+      name
+    }
+  }
+`;
+
+export const REGISTER_COMPLAINT = gql`
+  mutation createComplaint(
+    $details: String!
+    $clientName: String!
+    $openDate: DateTime!
+    $nature: ID!
+    $status: String!
+  ) {
+    createComplaint(
+      input: {
+        details: $details
+        clientName: $clientName
+        nature: $nature
+        status: $status
+        openDate: $openDate
+      }
+    ) {
+      result {
+        id
+      }
+    }
+  }
+`;
+
+export const UPDATE_ASSIGN_COMPLAINT = gql`
+  mutation assignTo($id: ID!, $userId: ID!) {
+    assignComplaint(id: $id, userId: $userId) {
+      complaint {
+        id
+        details
+        assignedTo {
+          id
+          username
+        }
+      }
+    }
+  }
+`;
+
+export const UPDATE_DETAILS_COMPLAINT = gql`
+  mutation updateDetails(
+    $id: ID!
+    $rca: String!
+    $actionPlan: String!
+    $results: String!
+    $financialImpact: String!
+    $costCenter: String!
+    $responsiblePerson: String!
+  ) {
+    updateComplaint(
+      id: $id
+      rca: $rca
+      actionPlan: $actionPlan
+      results: $results
+      financialImpact: $financialImpact
+      costCenter: $costCenter
+      responsiblePerson: $responsiblePerson
+    ) {
+      complaint {
+        id
+        details
+      }
+    }
+  }
+`;
