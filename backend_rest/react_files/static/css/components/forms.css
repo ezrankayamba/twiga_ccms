@@ -1,11 +1,11 @@
 .form {
   margin-top: 0.4em;
-  padding: 0 0.4em 0.4em;
+  padding: 0 0.3em 0.4em;
   font-size: 0.9em;
   background: rgb(253, 253, 253);
 }
 .form.v-scroll .form-fields {
-  max-height: 74vh;
+  max-height: 80vh;
   overflow-y: auto;
 }
 .form .form-grid-2 {
@@ -30,7 +30,7 @@
   outline: none;
 }
 .form .input-wrap textarea {
-  padding: 0.4em 0.6em;
+  padding: 0.2em 0.6em;
   border: 1px solid rgb(180, 180, 180);
   border-radius: 0.2em;
   outline: none;
