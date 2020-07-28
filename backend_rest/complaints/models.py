@@ -24,10 +24,12 @@ class Complaint(models.Model):
                                     blank=True)
     rca = models.CharField(max_length=255, null=True, blank=True)
     action_plan = models.CharField(max_length=255, null=True, blank=True)
-    results = models.CharField(max_length=255, null=True, blank=True)
+    results = models.CharField(max_length=500, null=True, blank=True)
     financial_impact = models.CharField(max_length=255, null=True, blank=True)
     cost_center = models.CharField(max_length=255, null=True, blank=True)
-    responsible_person = models.CharField(max_length=40, null=True, blank=True)
+    responsible_person = models.CharField(max_length=255,
+                                          null=True,
+                                          blank=True)
     due_date = models.DateTimeField(null=True, blank=True)
     close_date = models.DateTimeField(null=True, blank=True)
 

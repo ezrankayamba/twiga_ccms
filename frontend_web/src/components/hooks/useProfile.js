@@ -12,7 +12,10 @@ function useProfile(props) {
     console.log(error);
     if (error.graphQLErrors.length) {
       let message = error.graphQLErrors[0].message;
-      if (message === "Signature has expired") {
+      if (
+        message === "Signature has expired" ||
+        message === "You do not have permission to perform this action"
+      ) {
         history.push("/login");
       }
     }

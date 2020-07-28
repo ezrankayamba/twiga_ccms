@@ -2,8 +2,8 @@
 // 1. Backend endpoint depending on test vs live
 // 2.
 
-// const ENVIRON = "PROD";
-const ENVIRON = "DEV";
+const ENVIRON = "PROD";
+// const ENVIRON = "DEV";
 
 const CONF = {
   DEV: {

@@ -40,7 +40,7 @@ function LoginPage(props) {
     <>
       <span></span>
       <div className="login-page">
-        <div className="d-flex mb-1 p-1">
+        <div className="login-header d-flex mb-1 p-1">
           <h3>Twiga - CCMS</h3>
           <img
             src={

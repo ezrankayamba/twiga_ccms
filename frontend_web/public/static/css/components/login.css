@@ -5,4 +5,18 @@
 
 .login-page img {
   width: 8em;
+  border-radius: 1em;
+}
+
+.login-page .input-wrap {
+  padding-bottom: 0.8em;
+}
+.login-page .input-wrap input {
+  padding: 0.7em;
+}
+.login-page .login-header {
+  background: var(--color-brand);
+  color: var(--color-primary);
+  margin-bottom: 2em;
+  border-radius: 1em;
 }

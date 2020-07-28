@@ -51,8 +51,8 @@ function UpdateComplaintForm({ match }) {
     type: "textarea",
     onChange: handleChange,
     required: "required",
-    maxLength: "100",
-    help: "Max 100 characters",
+    maxLength: "200",
+    help: "Max 200 characters",
   };
   return redirect ? (
     <Redirect to={redirect} />
@@ -73,28 +73,31 @@ function UpdateComplaintForm({ match }) {
             <b>Details:</b> {complaint.details}
           </p>
           <Input
-            name="rca"
-            label="Root Cause Analysis"
-            {...inputsConf}
-            defaultValue={complaint.rca}
-          />
-          <Input
             name="actionPlan"
             label="Action Plan"
             {...inputsConf}
             defaultValue={complaint.actionPlan}
           />
           <Input
+            name="rca"
+            label="Root Cause Analysis"
+            {...inputsConf}
+            defaultValue={complaint.rca}
+          />
+          <Input
             name="results"
             label="Results"
             {...inputsConf}
-            defaultValue={complaint.rca}
+            defaultValue={complaint.results}
+            maxLength="500"
+            help="Max 500 characters"
+            rows="4"
           />
           <Input
             name="financialImpact"
             label="Financial Impact"
             {...inputsConf}
-            defaultValue={complaint.results}
+            defaultValue={complaint.financialImpact}
           />
           <Input
             name="costCenter"
