@@ -10,12 +10,23 @@ class Nature(models.Model):
         return self.name
 
 
+class Location(models.Model):
+    name = models.CharField(max_length=40, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Complaint(models.Model):
     open_date = models.DateTimeField()
     client_name = models.CharField(max_length=100)
     nature = models.ForeignKey(to=Nature,
                                on_delete=models.PROTECT,
-                               related_name='complaints')
+                               related_name='nature_complaints')
+    location = models.ForeignKey(to=Location,
+                                 on_delete=models.PROTECT,
+                                 related_name='location_complaints',
+                                 null=True)
     status = models.CharField(max_length=20)
     details = models.CharField(max_length=500)
     assigned_to = models.ForeignKey(to=User,
@@ -35,3 +46,6 @@ class Complaint(models.Model):
 
     def __str__(self):
         return f'{self.open_date.strftime("%d/%m/%Y")} - {self.client_name}'
+
+    class Meta:
+        ordering = ['-open_date']

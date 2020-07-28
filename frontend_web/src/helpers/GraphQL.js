@@ -5,6 +5,10 @@ export const COMPLAINTS = gql`
     complaints {
       id
       clientName
+      location {
+        id
+        name
+      }
       openDate
       status
       details
@@ -60,6 +64,14 @@ export const NATURES = gql`
     }
   }
 `;
+export const LOCATIONS = gql`
+  query getLocations {
+    locations {
+      id
+      name
+    }
+  }
+`;
 
 export const REGISTER_COMPLAINT = gql`
   mutation createComplaint(
@@ -67,6 +79,7 @@ export const REGISTER_COMPLAINT = gql`
     $clientName: String!
     $openDate: DateTime!
     $nature: ID!
+    $location: ID!
     $status: String!
   ) {
     createComplaint(
@@ -74,6 +87,7 @@ export const REGISTER_COMPLAINT = gql`
         details: $details
         clientName: $clientName
         nature: $nature
+        location: $location
         status: $status
         openDate: $openDate
       }

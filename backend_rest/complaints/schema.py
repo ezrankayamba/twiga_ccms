@@ -18,6 +18,11 @@ class NatureType(DjangoObjectType):
         model = models.Nature
 
 
+class LocationType(DjangoObjectType):
+    class Meta:
+        model = models.Location
+
+
 class ComplaintType(DjangoObjectType):
     class Meta:
         model = models.Complaint
@@ -25,6 +30,7 @@ class ComplaintType(DjangoObjectType):
 
 class Query(object):
     natures = graphene.List(NatureType)
+    locations = graphene.List(LocationType)
     complaints = graphene.List(ComplaintType)
     complaint = graphene.Field(ComplaintType, id=graphene.ID())
     users = graphene.List(UserType)
@@ -32,6 +38,9 @@ class Query(object):
 
     def resolve_natures(self, info, **kwargs):
         return models.Nature.objects.all()
+
+    def resolve_locations(self, info, **kwargs):
+        return models.Location.objects.all()
 
     @login_required
     def resolve_users(self, info, **kwargs):

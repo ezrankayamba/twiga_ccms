@@ -11,7 +11,7 @@ import AssignComplaintPopup from "./complaints/AssignComplaintPopup";
 import UpdateComplaintForm from "./complaints/UpdateComplaintForm";
 import useProfile from "../components/hooks/useProfile";
 
-function ComplaintsPage(props) {
+function ComplaintsPage() {
   useProfile();
   const { loading, error, data } = useQuery(COMPLAINTS);
   const [assign, setAssign] = useState(false);
@@ -20,10 +20,10 @@ function ComplaintsPage(props) {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
-  const data2 = {};
   const columns = [
     { name: "id", label: "ID" },
     { name: "clientName", label: "Client Name" },
+    { name: "location_name", label: "Location" },
     { name: "openDate", label: "Open Date" },
     { name: "nature_name", label: "Nature of Complaint" },
     { name: "status", label: "Status" },
@@ -35,7 +35,7 @@ function ComplaintsPage(props) {
           <span>{row.assignedTo.username}</span>
         ) : (
           <button
-            onClick={(e) => {
+            onClick={() => {
               setAssign(true);
               setSelected(row);
             }}
@@ -65,6 +65,7 @@ function ComplaintsPage(props) {
   const records = data.complaints.map((r) => ({
     ...r,
     nature_name: r.nature.name,
+    location_name: r.location ? r.location.name : "",
     openDate: fmtDate(r.openDate),
   }));
   return (

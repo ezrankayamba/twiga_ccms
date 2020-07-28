@@ -2,16 +2,23 @@ import React, { useState } from "react";
 import Input from "../../components/forms/Input";
 import Select from "../../components/forms/Select";
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import { REGISTER_COMPLAINT, COMPLAINTS, NATURES } from "../../helpers/GraphQL";
+import {
+  REGISTER_COMPLAINT,
+  COMPLAINTS,
+  NATURES,
+  LOCATIONS,
+} from "../../helpers/GraphQL";
 import MatIcon from "../../components/icons/MatIcon";
 import { NavLink, Redirect } from "react-router-dom";
 
 function NewComplaintRegisterPage({}) {
   let natures = useQuery(NATURES);
+  let locations = useQuery(LOCATIONS);
   const [redirect, setRedirect] = useState(null);
   const [formData, setFormData] = useState(new Map());
   const [registerComplaint, { loading }] = useMutation(REGISTER_COMPLAINT);
   const natureOptions = natures.data ? natures.data.natures : [];
+  const locationOptions = locations.data ? locations.data.locations : [];
   function handleSubmit(e) {
     e.preventDefault();
     registerComplaint({
@@ -53,12 +60,20 @@ function NewComplaintRegisterPage({}) {
               required
             />
             <Select
+              name="location"
+              label="Location"
+              options={locationOptions}
+              onChange={handleChange}
+              required
+            />
+            <Select
               name="nature"
               label="Nature"
               options={natureOptions}
               onChange={handleChange}
               required
             />
+
             <Input
               name="openDate"
               label="Open Date"
@@ -74,7 +89,7 @@ function NewComplaintRegisterPage({}) {
               type="textarea"
               onChange={handleChange}
               required
-              maxlength="300"
+              maxLength="300"
               help="Max 300 characters"
             />
           </div>
