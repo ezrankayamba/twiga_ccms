@@ -92,7 +92,8 @@ class ComplaintAssignMutation(graphene.Mutation):
         compl.assigned_by = user
         compl.assigned_at = datetime.datetime.now()
         compl.save()
-        gmail.send_assign(id, assign_to.email)
+        url = 'https://ccms.nezatech.co.tz/complaints'
+        gmail.send_assign(id, assign_to.email, base_url=url)
         return ComplaintAssignMutation(complaint=compl)
 
 
