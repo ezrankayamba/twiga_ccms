@@ -80,7 +80,6 @@ export const REGISTER_COMPLAINT = gql`
     $openDate: DateTime!
     $nature: ID!
     $location: ID!
-    $status: String!
   ) {
     createComplaint(
       input: {
@@ -88,7 +87,6 @@ export const REGISTER_COMPLAINT = gql`
         clientName: $clientName
         nature: $nature
         location: $location
-        status: $status
         openDate: $openDate
       }
     ) {

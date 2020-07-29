@@ -5,7 +5,9 @@ from . import models
 class ComplaintForm(forms.ModelForm):
     class Meta:
         model = models.Complaint
-        fields = '__all__'
+        fields = [
+            'client_name', 'location', 'nature', 'open_date', 'details'
+        ]
 
 
 class CsvImportForm(forms.Form):

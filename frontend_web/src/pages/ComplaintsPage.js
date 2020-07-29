@@ -48,14 +48,16 @@ function ComplaintsPage() {
     {
       name: "viewDetails",
       label: "",
-      render: (row) => (
-        <NavLink
-          className="link btn-light"
-          to={`/complaints/details/${row.id}`}
-        >
-          View <MatIcon name="chevron_right" />
-        </NavLink>
-      ),
+      render: (row) =>
+        row.assignedTo ? (
+          <NavLink
+            className="btn-primary d-flex"
+            to={`/complaints/details/${row.id}`}
+          >
+            {row.status === "COMPLETED" ? "View Details" : "Complete"}
+            <MatIcon name="chevron_right" />
+          </NavLink>
+        ) : null,
     },
   ];
   const fmtDate = (strDate) => {

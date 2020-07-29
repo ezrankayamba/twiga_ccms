@@ -6,6 +6,8 @@ from . import forms
 from django.contrib.auth.models import User
 import graphql_jwt
 from graphql_jwt.decorators import login_required
+from core import gmail
+import datetime
 
 
 class UserType(DjangoObjectType):
@@ -82,9 +84,15 @@ class ComplaintAssignMutation(graphene.Mutation):
 
     @login_required
     def mutate(self, info, user_id, id):
+        user = info.context.user
+        assign_to = User.objects.get(pk=user_id)
         compl = models.Complaint.objects.get(pk=id)
-        compl.assigned_to_id = user_id
+        compl.assigned_to = assign_to
+        compl.status = models.STATUS_OPEN
+        compl.assigned_by = user
+        compl.assigned_at = datetime.datetime.now()
         compl.save()
+        gmail.send_assign(id, assign_to.email)
         return ComplaintAssignMutation(complaint=compl)
 
 
@@ -115,6 +123,7 @@ class ComplaintDetailsUpdateMutation(graphene.Mutation):
     @login_required
     def mutate(self, info, id, rca, action_plan, results, financial_impact,
                cost_center, responsible_person):
+        user = info.context.user
         compl = models.Complaint.objects.get(pk=id)
         compl.rca = rca
         compl.action_plan = action_plan
@@ -122,6 +131,9 @@ class ComplaintDetailsUpdateMutation(graphene.Mutation):
         compl.financial_impact = financial_impact
         compl.cost_center = cost_center
         compl.responsible_person = responsible_person
+        compl.status = models.STATUS_COMPLETED
+        compl.close_date = datetime.datetime.now()
+        compl.closed_by = user
         compl.save()
         return ComplaintDetailsUpdateMutation(complaint=compl)
 

@@ -25,7 +25,6 @@ function NewComplaintRegisterPage({}) {
       variables: {
         ...formData,
         openDate: `${formData.openDate}T00:00+03:00`,
-        status: "Created",
       },
       refetchQueries: [{ query: COMPLAINTS }],
     }).then(

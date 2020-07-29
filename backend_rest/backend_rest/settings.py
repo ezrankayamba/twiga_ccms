@@ -21,7 +21,7 @@ INSTALLED_APPS = [
     'complaints', 'django.contrib.admin', 'django.contrib.auth',
     'django.contrib.contenttypes', 'django.contrib.sessions',
     'django.contrib.messages', 'django.contrib.staticfiles', 'graphene_django',
-    'web', 'graphql_auth'
+    'web', 'graphql_auth', 'core'
 ]
 
 MIDDLEWARE = [
