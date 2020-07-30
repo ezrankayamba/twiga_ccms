@@ -1,8 +1,8 @@
 import { gql } from "apollo-boost";
 
 export const COMPLAINTS = gql`
-  query fetchComplaints {
-    complaints {
+  query fetchComplaints($pageNo: Int, $pageSize: Int) {
+    complaints(pageNo: $pageNo, pageSize: $pageSize) {
       id
       clientName
       location {

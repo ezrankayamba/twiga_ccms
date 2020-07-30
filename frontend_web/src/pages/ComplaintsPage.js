@@ -10,15 +10,26 @@ import Modal from "../components/modals/Modal";
 import AssignComplaintPopup from "./complaints/AssignComplaintPopup";
 import UpdateComplaintForm from "./complaints/UpdateComplaintForm";
 import useProfile from "../components/hooks/useProfile";
-
+import Pagination from "../components/tables/Pagination";
+import { useEffect } from "react";
+const PAGE_SIZE = 10;
 function ComplaintsPage() {
+  const [pageNo, setPageNo] = useState(1);
   useProfile();
-  const { loading, error, data } = useQuery(COMPLAINTS);
+  const complaintsQuery = useQuery(COMPLAINTS, {
+    variables: { pageSize: PAGE_SIZE, pageNo: pageNo },
+  });
+  useEffect(() => {
+    console.log("Page changed", complaintsQuery);
+    complaintsQuery.refetch({
+      variables: { pageSize: PAGE_SIZE, pageNo: pageNo },
+    });
+  }, [pageNo]);
   const [assign, setAssign] = useState(false);
   const [selected, setSelected] = useState(null);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+  if (complaintsQuery.loading) return <p>Loading...</p>;
+  if (complaintsQuery.error) return <p>Error :(</p>;
 
   const columns = [
     { name: "id", label: "ID" },
@@ -64,7 +75,7 @@ function ComplaintsPage() {
     let parsed = Date.parse(strDate);
     return new Date(parsed).toLocaleDateString("en-GB");
   };
-  const records = data.complaints.map((r) => ({
+  const records = complaintsQuery.data.complaints.map((r) => ({
     ...r,
     nature_name: r.nature.name,
     location_name: r.location ? r.location.name : "",
@@ -83,6 +94,13 @@ function ComplaintsPage() {
           </NavLink>
         </div>
         <Table columns={columns} data={records} />
+        <Pagination
+          pageNo={pageNo}
+          onPageChanged={(newPageNo) => {
+            setPageNo(newPageNo);
+          }}
+          lastPage={complaintsQuery.data.complaints.length < PAGE_SIZE}
+        />
       </Route>
       <Route path="/complaints/new-complaint" exact>
         <NewComplaintRegisterPage />

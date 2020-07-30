@@ -9,6 +9,8 @@ from graphql_jwt.decorators import login_required
 from core import gmail
 import datetime
 
+DEFAULT_PAGE_SIZE = 4
+
 
 class UserType(DjangoObjectType):
     class Meta:
@@ -33,7 +35,9 @@ class ComplaintType(DjangoObjectType):
 class Query(object):
     natures = graphene.List(NatureType)
     locations = graphene.List(LocationType)
-    complaints = graphene.List(ComplaintType)
+    complaints = graphene.List(ComplaintType,
+                               page_no=graphene.Int(),
+                               page_size=graphene.Int())
     complaint = graphene.Field(ComplaintType, id=graphene.ID())
     users = graphene.List(UserType)
     me = graphene.Field(UserType)
@@ -56,9 +60,18 @@ class Query(object):
         return user
 
     @login_required
-    def resolve_complaints(self, info, **kwargs):
-        return models.Complaint.objects.select_related('nature',
-                                                       'assigned_to').all()
+    def resolve_complaints(self,
+                           info,
+                           page_no=1,
+                           page_size=DEFAULT_PAGE_SIZE,
+                           **kwargs):
+
+        start = (page_no - 1) * page_size
+        to = page_no * page_size
+        qs = models.Complaint.objects.select_related(
+            'nature', 'assigned_to').all()[start:to]
+
+        return qs
 
     @login_required
     def resolve_complaint(self, info, id):

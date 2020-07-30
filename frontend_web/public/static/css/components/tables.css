@@ -35,3 +35,26 @@ td.col-ellipsis {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.pagination {
+  display: flex;
+  align-items: center;
+  padding: 0.4em 0;
+}
+.pagination li {
+  margin: 0 0.4em;
+}
+.pagination li button,
+.pagination li span {
+  color: rgb(24, 102, 133);
+}
+.pagination .btn-wrap:first-child button {
+  padding: 0.1em 0.5em 0.1em 0;
+}
+.pagination .btn-wrap:last-child button {
+  padding: 0.1em 0 0.1em 0.5em;
+}
+.pagination .btn-wrap button:disabled,
+.pagination .btn-wrap button:disabled * {
+  color: rgb(156, 152, 152);
+}
