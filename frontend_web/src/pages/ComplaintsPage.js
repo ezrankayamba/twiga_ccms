@@ -12,14 +12,20 @@ import UpdateComplaintForm from "./complaints/UpdateComplaintForm";
 import useProfile from "../components/hooks/useProfile";
 import Pagination from "../components/tables/Pagination";
 import { useEffect } from "react";
+import { useRef } from "react";
 const PAGE_SIZE = 10;
 function ComplaintsPage() {
   const [pageNo, setPageNo] = useState(1);
+  let firstRender = useRef(true);
   useProfile();
   const complaintsQuery = useQuery(COMPLAINTS, {
     variables: { pageSize: PAGE_SIZE, pageNo: pageNo },
   });
   useEffect(() => {
+    if (firstRender) {
+      firstRender = false;
+      return;
+    }
     console.log("Page changed", complaintsQuery);
     complaintsQuery.refetch({
       variables: { pageSize: PAGE_SIZE, pageNo: pageNo },
