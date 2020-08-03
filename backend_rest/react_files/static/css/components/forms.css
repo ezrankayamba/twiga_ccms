@@ -71,7 +71,7 @@
   gap: 0.5em;
 }
 .grid-form-details > div {
-  background: var(--color-light);
+  border: 1px solid var(--color-light);
 }
 .grid-form-details > div.span {
   grid-column: 1/-1;
@@ -80,11 +80,13 @@
   line-height: 1.5em;
   padding: 0 0.4rem;
   font-weight: bold;
+  background: var(--color-light);
+  display: flex;
 }
 .grid-form-details p {
   background: #ffffff;
   padding: 0.4rem;
-  border: 1px solid var(--color-light);
+
   font-size: 0.8em;
 }
 
