@@ -19,9 +19,6 @@ function NavBar() {
             <li>
               <NavLink to="/complaints">Complaints</NavLink>
             </li>
-            {/* <li>
-              <NavLink to="/users">Manage Users</NavLink>
-            </li> */}
           </ul>
           <UserProfile />
         </div>

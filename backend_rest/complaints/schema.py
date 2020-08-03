@@ -8,6 +8,7 @@ import graphql_jwt
 from graphql_jwt.decorators import login_required
 from core import gmail
 import datetime
+from . import reports
 
 DEFAULT_PAGE_SIZE = 4
 
@@ -32,6 +33,17 @@ class ComplaintType(DjangoObjectType):
         model = models.Complaint
 
 
+class NatureSummaryType(graphene.ObjectType):
+    name = graphene.String()
+    count_all = graphene.Int()
+    count_done = graphene.Int()
+
+
+class StatusSummaryType(graphene.ObjectType):
+    name = graphene.String()
+    count = graphene.Int()
+
+
 class Query(object):
     natures = graphene.List(NatureType)
     locations = graphene.List(LocationType)
@@ -41,12 +53,22 @@ class Query(object):
     complaint = graphene.Field(ComplaintType, id=graphene.ID())
     users = graphene.List(UserType)
     me = graphene.Field(UserType)
+    nature_summary = graphene.List(NatureSummaryType)
+    status_summary = graphene.List(StatusSummaryType)
 
     def resolve_natures(self, info, **kwargs):
         return models.Nature.objects.all()
 
     def resolve_locations(self, info, **kwargs):
         return models.Location.objects.all()
+
+    def resolve_nature_summary(self, info, **kwargs):
+        qs = reports.get_nature_summary()
+        return qs
+
+    def resolve_status_summary(self, info, **kwargs):
+        qs = reports.get_complaints_status_summary()
+        return qs
 
     @login_required
     def resolve_users(self, info, **kwargs):
@@ -66,8 +88,9 @@ class Query(object):
                            page_size=DEFAULT_PAGE_SIZE,
                            **kwargs):
 
-        start = (page_no - 1) * page_size
+        start = ((page_no - 1) * page_size)
         to = page_no * page_size
+        print(f'Start: {start}, To: {to}')
         qs = models.Complaint.objects.select_related(
             'nature', 'assigned_to').all()[start:to]
 

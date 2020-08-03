@@ -13,6 +13,7 @@ import useProfile from "../components/hooks/useProfile";
 import Pagination from "../components/tables/Pagination";
 import { useEffect } from "react";
 import { useRef } from "react";
+import ComplaintDetailViewPage from "./complaints/ComplaintDetailViewPage";
 const PAGE_SIZE = 10;
 function ComplaintsPage() {
   const [pageNo, setPageNo] = useState(1);
@@ -63,18 +64,25 @@ function ComplaintsPage() {
     },
     { name: "details", label: "Details", className: "col-ellipsis" },
     {
-      name: "viewDetails",
+      name: "updateDetails",
       label: "",
       render: (row) =>
-        row.assignedTo ? (
+        row.assignedTo && row.status !== "COMPLETED" ? (
           <NavLink
-            className="btn-primary d-flex"
-            to={`/complaints/details/${row.id}`}
+            className="btn btn-light p-1 d-flex align-left"
+            to={`/complaints/update/${row.id}`}
           >
-            {row.status === "COMPLETED" ? "View Details" : "Complete"}
-            <MatIcon name="chevron_right" />
+            <MatIcon name="settings" text="Complete" />
           </NavLink>
         ) : null,
+    },
+    {
+      name: "viewDetails",
+      render: (row) => (
+        <NavLink to={`/complaints/view/${row.id}`} className="d-flex">
+          <MatIcon name="unfold_more" />
+        </NavLink>
+      ),
     },
   ];
   const fmtDate = (strDate) => {
@@ -111,8 +119,11 @@ function ComplaintsPage() {
       <Route path="/complaints/new-complaint" exact>
         <NewComplaintRegisterPage />
       </Route>
-      <Route path="/complaints/details/:id" exact>
+      <Route path="/complaints/update/:id" exact>
         <UpdateComplaintForm />
+      </Route>
+      <Route path="/complaints/view/:id" exact>
+        <ComplaintDetailViewPage />
       </Route>
       {assign && (
         <Modal title={selected.clientName} onClose={() => setAssign(false)}>

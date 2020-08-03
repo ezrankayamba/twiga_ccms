@@ -8,11 +8,12 @@
 @import "./components/toolbar.css";
 @import "./components/buttons.css";
 @import "./components/login.css";
+@import "./components/dashboard.css";
 
 :root {
   --color-primary: #2b7a78;
   --color-brand: #ffd400;
-  --color-light: rgb(217, 227, 248);
+  --color-light: rgb(250, 250, 255);
   --color-dark: rgb(113, 124, 150);
 }
 

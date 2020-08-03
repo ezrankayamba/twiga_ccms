@@ -1,0 +1,13 @@
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
+}
+
+.graph-container {
+  background: var(--color-light);
+  padding: 0.4em;
+}
+.grid-all-cols {
+  grid-column: 1/-1;
+}

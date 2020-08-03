@@ -47,11 +47,24 @@ export const GET_COMPLAINT = gql`
       costCenter
       responsiblePerson
       dueDate
-      closeDate
       nature {
         id
         name
       }
+      location {
+        id
+        name
+      }
+      assignedTo {
+        id
+        username
+      }
+      assignedAt
+      closedBy {
+        id
+        username
+      }
+      closeDate
     }
   }
 `;

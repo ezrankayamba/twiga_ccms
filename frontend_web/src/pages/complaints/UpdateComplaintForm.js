@@ -9,8 +9,10 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 import { Redirect, NavLink } from "react-router-dom";
 import MatIcon from "../../components/icons/MatIcon";
 import { withRouter } from "react-router";
+import useProfile from "../../components/hooks/useProfile";
 
 function UpdateComplaintForm({ match }) {
+  useProfile();
   const [redirect, setRedirect] = useState(null);
   const [formData, setFormData] = useState(new Map());
 

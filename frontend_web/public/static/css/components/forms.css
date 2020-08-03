@@ -63,3 +63,38 @@
   font-size: 0.55em;
   color: #777;
 }
+.grid-form-details {
+  font-size: 0.8em;
+  margin-top: 0.4em;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5em;
+}
+.grid-form-details > div {
+  background: var(--color-light);
+}
+.grid-form-details > div.span {
+  grid-column: 1/-1;
+}
+.grid-form-details label {
+  line-height: 1.5em;
+  padding: 0 0.4rem;
+  font-weight: bold;
+}
+.grid-form-details p {
+  background: #ffffff;
+  padding: 0.4rem;
+  border: 1px solid var(--color-light);
+  font-size: 0.8em;
+}
+
+.details .status {
+  background: var(--color-brand);
+  padding: 0.2em 0.4em;
+  color: var(--color-primary);
+  font-size: 0.8em;
+}
+.details .status span {
+  font-weight: bold;
+  color: var(--color-light);
+}
