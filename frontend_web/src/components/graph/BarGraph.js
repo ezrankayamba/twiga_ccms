@@ -54,9 +54,11 @@ const BarGraph = ({ graphId, meta, title, extra = null, type = "bar" }) => {
   }, []);
 
   return (
-    <div className={`graph-container bg-white card p-2 ${extra ? extra : ""}`}>
-      <h6>{title}</h6>
-      <canvas id={graphId} className="graph" style={{}}></canvas>
+    <div className={`graph-container bg-white card ${extra ? extra : ""}`}>
+      <h6 className="pl-1">{title}</h6>
+      <div>
+        <canvas id={graphId} className="graph p-1" style={{}}></canvas>
+      </div>
     </div>
   );
 };

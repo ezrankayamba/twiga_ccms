@@ -52,8 +52,10 @@ const PieChart = ({ meta, graphId, title, colors, onDataClick }) => {
   }, []);
   return (
     <div className="graph-container bg-white card p-2">
-      <h6>{title}</h6>
-      <canvas id={graphId} className="graph" style={{}}></canvas>
+      <h6 className="pl-1">{title}</h6>
+      <div>
+        <canvas id={graphId} className="graph p-1" style={{}}></canvas>
+      </div>
     </div>
   );
 };

@@ -13,5 +13,12 @@ def get_complaints_status_summary():
     qs = models.Complaint.objects.raw(
         "select max(c.id) as id, c.status as name, count(c.id) as count from complaints_complaint c group by c.status"
     )
+    return qs
+
+
+def get_location_summary():
+    qs = models.Complaint.objects.raw(
+        "select max(c.id) as id, l.name as loc_name, count(c.id) as loc_count from complaints_complaint c left join complaints_location l on c.location_id=l.id group by l.name"
+    )
 
     return qs

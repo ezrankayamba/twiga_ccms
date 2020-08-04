@@ -18,3 +18,12 @@ export const STATUS_SUMMARY = gql`
     }
   }
 `;
+
+export const LOCATION_SUMMARY = gql`
+  query getLocSummary {
+    locationSummary {
+      locName
+      locCount
+    }
+  }
+`;

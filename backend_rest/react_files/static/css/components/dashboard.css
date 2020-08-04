@@ -1,12 +1,15 @@
 .dashboard {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1em;
+  gap: 0.5em;
+  /* max-width: calc(100% - 0.7em); */
+  margin: auto;
 }
 
 .graph-container {
-  background: var(--color-light);
-  padding: 0.4em;
+  background: #fdfdff;
+  /* padding: 0.4em; */
+  box-shadow: 2px 2px 1px -2px rgba(221, 221, 255, 1);
 }
 .grid-all-cols {
   grid-column: 1/-1;

@@ -45,6 +45,11 @@ class StatusSummaryType(graphene.ObjectType):
     count = graphene.Int()
 
 
+class LocationSummaryType(graphene.ObjectType):
+    loc_name = graphene.String()
+    loc_count = graphene.Int()
+
+
 class Query(object):
     natures = graphene.List(NatureType)
     locations = graphene.List(LocationType)
@@ -57,6 +62,7 @@ class Query(object):
     user = graphene.Field(UserType, id=graphene.ID())
     nature_summary = graphene.List(NatureSummaryType)
     status_summary = graphene.List(StatusSummaryType)
+    location_summary = graphene.List(LocationSummaryType)
 
     def resolve_natures(self, info, **kwargs):
         return models.Nature.objects.all()
@@ -70,6 +76,10 @@ class Query(object):
 
     def resolve_status_summary(self, info, **kwargs):
         qs = reports.get_complaints_status_summary()
+        return qs
+
+    def resolve_location_summary(self, info, **kwargs):
+        qs = reports.get_location_summary()
         return qs
 
     @login_required
