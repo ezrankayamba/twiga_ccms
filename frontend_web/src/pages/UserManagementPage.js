@@ -6,6 +6,7 @@ import { Route, NavLink, useHistory } from "react-router-dom";
 import MatIcon from "../components/icons/MatIcon";
 import Table from "../components/tables/Table";
 import useProfile from "../components/hooks/useProfile";
+import UpdateUserPage from "./users/UpdateUserPage";
 
 function UserManagementPage(props) {
   useProfile();
@@ -17,8 +18,19 @@ function UserManagementPage(props) {
   const columns = [
     { name: "id", label: "ID" },
     { name: "username", label: "Client Name" },
-    { name: "email", label: "Open Date" },
+    { name: "email", label: "Email" },
     { name: "name", label: "Full Name" },
+    {
+      name: "actions",
+      label: "",
+      render: (row) => (
+        <div>
+          <a href={`/users/update/${row.id}`} className="d-flex align-left">
+            <MatIcon name="edit" text="Edit" />
+          </a>
+        </div>
+      ),
+    },
   ];
 
   const records = data.users.map((r) => ({
@@ -41,6 +53,9 @@ function UserManagementPage(props) {
       </Route>
       <Route path="/users/new-user" exact>
         <NewUserPage />
+      </Route>
+      <Route path="/users/update/:id" exact>
+        <UpdateUserPage />
       </Route>
     </>
   );

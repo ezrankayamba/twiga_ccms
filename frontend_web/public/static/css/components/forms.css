@@ -100,3 +100,6 @@
   font-weight: bold;
   color: var(--color-light);
 }
+.form.form-medium {
+  max-width: 24em;
+}

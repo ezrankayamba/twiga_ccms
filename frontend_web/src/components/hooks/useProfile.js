@@ -17,9 +17,10 @@ function useProfile() {
         history.push("/login");
       }
     }
-
+    console.log(error);
     return null;
   }
+  console.log(data);
   return data;
 }
 

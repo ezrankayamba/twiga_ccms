@@ -1,21 +1,37 @@
 import React, { useState } from "react";
-import { NavLink, Redirect } from "react-router-dom";
+import { NavLink, Redirect, withRouter } from "react-router-dom";
 import MatIcon from "../../components/icons/MatIcon";
-import { REGISTER_USER, USERS, USERS_GET_ME } from "../../helpers/UsersGraphQL";
-import { useMutation } from "@apollo/react-hooks";
+import {
+  REGISTER_USER,
+  USERS,
+  USERS_GET_ME,
+  GET_USER,
+} from "../../helpers/UsersGraphQL";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 import Input from "../../components/forms/Input";
 
-function NewUserPage() {
+function UpdateUserPage({ match }) {
   const [redirect, setRedirect] = useState(null);
   const [formData, setFormData] = useState(new Map());
-  const [registerUser, { loading }] = useMutation(REGISTER_USER);
+  const [registerUser, {}] = useMutation(REGISTER_USER);
+  const { loading, error, data } = useQuery(GET_USER, {
+    variables: { id: match.params.id },
+  });
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
+  let user = data.user;
 
   function handleSubmit(e) {
     e.preventDefault();
+    let prev = new Map();
+    Object.keys(user).forEach((key) => {
+      if (!formData[key]) {
+        prev[key] = user[key];
+      }
+    });
+
     registerUser({
-      variables: {
-        ...formData,
-      },
+      variables: { ...formData, ...prev, id: user.id },
       refetchQueries: [{ query: USERS }, { query: USERS_GET_ME }],
     }).then(
       () => setRedirect("/users"),
@@ -35,7 +51,7 @@ function NewUserPage() {
           <NavLink to="/users" className="btn btn-light mr-1">
             <MatIcon name="keyboard_arrow_left" />
           </NavLink>
-          <h5>Register New User</h5>
+          <h5>Update User</h5>
         </div>
       </div>
       {loading && <p>Sending ....</p>}
@@ -46,6 +62,8 @@ function NewUserPage() {
             label="Username"
             onChange={handleChange}
             required
+            defaultValue={user.username}
+            readOnly={true}
           />
           <Input
             name="email"
@@ -53,18 +71,21 @@ function NewUserPage() {
             onChange={handleChange}
             type="email"
             required
+            defaultValue={user.email}
           />
           <Input
             name="firstName"
             label="First Name"
             onChange={handleChange}
             required
+            defaultValue={user.firstName}
           />
           <Input
             name="lastName"
             label="Last Name"
             onChange={handleChange}
             required
+            defaultValue={user.lastName}
           />
         </div>
         <div className="form-footer">
@@ -75,4 +96,4 @@ function NewUserPage() {
   );
 }
 
-export default NewUserPage;
+export default withRouter(UpdateUserPage);

@@ -9,6 +9,7 @@ from graphql_jwt.decorators import login_required
 from core import gmail
 import datetime
 from . import reports
+DEFAULT_PASS = 'testing321'
 
 DEFAULT_PAGE_SIZE = 4
 
@@ -53,6 +54,7 @@ class Query(object):
     complaint = graphene.Field(ComplaintType, id=graphene.ID())
     users = graphene.List(UserType)
     me = graphene.Field(UserType)
+    user = graphene.Field(UserType, id=graphene.ID())
     nature_summary = graphene.List(NatureSummaryType)
     status_summary = graphene.List(StatusSummaryType)
 
@@ -79,6 +81,11 @@ class Query(object):
         user = info.context.user
         if user.is_anonymous:
             raise Exception('Authentication Failure!')
+        return user
+
+    @login_required
+    def resolve_user(self, info, id, **kwargs):
+        user = User.objects.get(pk=id)
         return user
 
     @login_required
@@ -109,6 +116,54 @@ class ComplaintMutation(DjangoModelFormMutation):
         form_class = forms.ComplaintForm
         input_field_name = 'data'
         return_field_name = 'result'
+
+
+class UserMutation(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required=False)
+        username = graphene.String(required=True)
+        email = graphene.String(required=True)
+        first_name = graphene.String(required=False)
+        last_name = graphene.String(required=False)
+
+    user = graphene.Field(UserType)
+
+    @login_required
+    def mutate(self,
+               info,
+               username,
+               email,
+               first_name=None,
+               last_name=None,
+               id=None):
+        # user = info.context.user
+        data = {
+            'username': username,
+            'email': email,
+            'first_name': first_name,
+            'last_name': last_name
+        }
+        user = User.objects.filter(pk=id).first() if id else None
+        if user:
+            # User.objects.filter(pk=id).update(**data)
+            user.email = email
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+        else:
+            user = User.objects.create_user(username,
+                                            email,
+                                            password=DEFAULT_PASS)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+            url = 'https://ccms.nezatech.co.tz'
+            gmail.send_registered(id,
+                                  user.email,
+                                  def_pass=DEFAULT_PASS,
+                                  base_url=url)
+
+        return UserMutation(user=user)
 
 
 class ComplaintAssignMutation(graphene.Mutation):
@@ -186,6 +241,7 @@ class RootMutation(graphene.ObjectType):
     create_complaint = ComplaintMutation.Field()
     assign_complaint = ComplaintAssignMutation.Field()
     update_complaint = ComplaintDetailsUpdateMutation.Field()
+    register_user = UserMutation.Field()
     get_me = GetMeMutation.Field()
 
 

@@ -4,7 +4,8 @@ import UserProfile from "./UserProfile";
 import useProfile from "../hooks/useProfile";
 
 function NavBar() {
-  useProfile();
+  const user = useProfile();
+  console.log(user);
   return (
     <header className="navbar container">
       <div className="content">
@@ -19,6 +20,11 @@ function NavBar() {
             <li>
               <NavLink to="/complaints">Complaints</NavLink>
             </li>
+            {user && user.me && user.me.isSuperuser && (
+              <li>
+                <NavLink to="/users">Users</NavLink>
+              </li>
+            )}
           </ul>
           <UserProfile />
         </div>
