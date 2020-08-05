@@ -1,0 +1,41 @@
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1em;
+}
+.details-grid .sidebar {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+.details-grid .sidebar ul {
+  padding: 0.4em;
+}
+.details-grid .sidebar ul li {
+  font-size: 0.7em;
+  padding: 0.5em 0;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+}
+.details-grid .sidebar ul li .mat-icon {
+  font-size: 1.6em;
+}
+.details-grid .sidebar .send-feedback {
+  padding: 0.4em;
+  margin: 0.4em;
+  color: var(--color-light);
+  display: flex;
+  align-items: center;
+}
+
+.details-grid .sidebar .status {
+  padding: 0.6em;
+  font-size: bolder;
+}
+
+.details-grid .kpi {
+  background: #fff;
+  padding: 0.8em !important;
+  border-radius: 1.2em;
+  margin-top: 1em;
+}

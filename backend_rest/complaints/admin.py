@@ -8,6 +8,7 @@ import io
 
 # admin.site.register(models.Nature)
 admin.site.register(models.Complaint)
+admin.site.register(models.Document)
 
 
 @admin.register(models.Location)

@@ -1,13 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
-STATUS_CREATED = 'Created'
-STATUS_OPEN = 'Open'
+STATUS_CREATED = 'Not Assigned'
+STATUS_OPEN = 'Assigned'
 STATUS_COMPLETED = 'Completed'
+STATUS_FEEDBACK_SENT = 'Feedback Sent'
 COMPLAINT_STATUS = [
     (STATUS_CREATED, STATUS_CREATED),
     (STATUS_OPEN, STATUS_OPEN),
     (STATUS_COMPLETED, STATUS_COMPLETED),
+    (STATUS_FEEDBACK_SENT, STATUS_FEEDBACK_SENT),
 ]
 
 
@@ -64,9 +66,25 @@ class Complaint(models.Model):
                                   on_delete=models.PROTECT,
                                   null=True,
                                   related_name='closed_complaints')
+    feedback_by = models.ForeignKey(to=User,
+                                    on_delete=models.PROTECT,
+                                    null=True,
+                                    related_name='feedback_complaints')
+    feedback_at = models.DateTimeField(null=True)
 
     def __str__(self):
         return f'{self.open_date.strftime("%d/%m/%Y")} - {self.client_name}'
 
     class Meta:
-        ordering = ['-open_date']
+        ordering = ['-created_at']
+
+
+class Document(models.Model):
+    name = models.CharField(max_length=100)
+    complaint = models.ForeignKey(to=Complaint,
+                                  related_name='docs',
+                                  on_delete=models.CASCADE)
+    file = models.FileField(upload_to='attachments')
+
+    def __str__(self):
+        return self.name

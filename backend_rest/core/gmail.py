@@ -1,5 +1,6 @@
 import smtplib
 from email.message import EmailMessage
+import os
 
 EMAIL_ADDRESS = 'twiga.nezatech@gmail.com'
 EMAIL_PASSWORD = 'gjkrloqotkbehwqp'
@@ -41,4 +42,27 @@ def send_registered(id, dest, def_pass, base_url='http://localhost:8000'):
         smtp.send_message(msg)
 
 
-# send_assign(1234, 'ezrankayamba@gmail.com')
+def send_feedback(complaint, dest, cc=None):
+    msg = EmailMessage()
+    msg['Subject'] = f'Customer Feedback #{complaint.id}'
+    msg['From'] = f'Twiga - CCMS<{EMAIL_ADDRESS}>'
+    msg['To'] = dest
+    msg['CC'] = cc
+    msg.set_content('HTML disabled?')
+
+    with open('feedback.html', 'r') as f:
+        html = f.read()
+        html = html.replace('RECORD_ID', f'{complaint.id}')
+    msg.add_alternative(html, subtype='html')
+    for doc in complaint.docs.all():
+        with open(doc.file.path, 'rb') as file:
+            file_data = file.read()
+            file_name = os.path.basename(doc.file.name)
+            msg.add_attachment(file_data,
+                               maintype='application',
+                               subtype='octet-stream',
+                               filename=file_name)
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+        smtp.send_message(msg)

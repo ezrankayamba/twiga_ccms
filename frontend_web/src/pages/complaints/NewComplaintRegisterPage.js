@@ -24,7 +24,7 @@ function NewComplaintRegisterPage({}) {
     registerComplaint({
       variables: {
         ...formData,
-        openDate: `${formData.openDate}T00:00+03:00`,
+        openDate: `${formData.openDate}T00:00+00:00`,
       },
       refetchQueries: [{ query: COMPLAINTS }],
     }).then(
@@ -79,6 +79,7 @@ function NewComplaintRegisterPage({}) {
               type="date"
               onChange={handleChange}
               required
+              max={new Date().toISOString().split("T")[0]}
             />
           </div>
           <div>

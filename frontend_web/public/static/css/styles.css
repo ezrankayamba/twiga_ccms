@@ -9,6 +9,7 @@
 @import "./components/buttons.css";
 @import "./components/login.css";
 @import "./components/dashboard.css";
+@import "./components/complaint.css";
 
 :root {
   --color-primary: #2b7a78;

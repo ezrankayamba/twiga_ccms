@@ -9,6 +9,9 @@ from graphql_jwt.decorators import login_required
 from core import gmail
 import datetime
 from . import reports
+import base64
+from django.core.files.base import ContentFile
+
 DEFAULT_PASS = 'testing321'
 
 DEFAULT_PAGE_SIZE = 4
@@ -198,6 +201,40 @@ class ComplaintAssignMutation(graphene.Mutation):
         return ComplaintAssignMutation(complaint=compl)
 
 
+def data_uri_to_file(data, filename='temp'):
+    format, imgstr = data.split(';base64,')  # format ~= data:image/X,
+    ext = format.split('/')[-1]  # guess file extension
+    file = ContentFile(base64.b64decode(imgstr), name=f'{filename}.' + ext)
+    return file
+
+
+class ComplaintFeedbackMutation(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required=True)
+        details = graphene.String(required=True)
+        email = graphene.String(required=True)
+        remarks = graphene.String(required=False)
+
+    complaint = graphene.Field(ComplaintType)
+
+    @login_required
+    def mutate(self, info, id, details, email, remarks=None):
+        user = info.context.user
+        compl = models.Complaint.objects.get(pk=id)
+
+        file = data_uri_to_file(details, filename=f'complaint-details-{id}')
+        doc = models.Document.objects.create(name='Details',
+                                             complaint=compl,
+                                             file=file)
+        compl.feedback_by = user
+        compl.status = models.STATUS_FEEDBACK_SENT
+        compl.feedback_at = datetime.datetime.now()
+        compl.save()
+        url = 'https://ccms.nezatech.co.tz/complaints'
+        gmail.send_feedback(compl, email, cc=user.email)
+        return ComplaintFeedbackMutation(complaint=compl)
+
+
 class GetMeMutation(graphene.Mutation):
 
     me = graphene.Field(UserType)
@@ -253,6 +290,7 @@ class RootMutation(graphene.ObjectType):
     update_complaint = ComplaintDetailsUpdateMutation.Field()
     register_user = UserMutation.Field()
     get_me = GetMeMutation.Field()
+    feedback = ComplaintFeedbackMutation.Field()
 
 
 root_schema = graphene.Schema(query=RootQuery, mutation=RootMutation)

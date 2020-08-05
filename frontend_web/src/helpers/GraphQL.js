@@ -151,3 +151,19 @@ export const UPDATE_DETAILS_COMPLAINT = gql`
     }
   }
 `;
+
+export const SEND_FEEDBACK = gql`
+  mutation sendFeedback(
+    $details: String!
+    $id: ID!
+    $email: String!
+    $remarks: String
+  ) {
+    feedback(details: $details, id: $id, email: $email, remarks: $remarks) {
+      complaint {
+        id
+        clientName
+      }
+    }
+  }
+`;
