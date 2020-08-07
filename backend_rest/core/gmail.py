@@ -42,19 +42,20 @@ def send_registered(id, dest, def_pass, base_url='http://localhost:8000'):
         smtp.send_message(msg)
 
 
-def send_feedback(complaint, dest, cc=None):
+def send_feedback(complaint, cc=None):
     msg = EmailMessage()
     msg['Subject'] = f'Customer Feedback #{complaint.id}'
     msg['From'] = f'Twiga - CCMS<{EMAIL_ADDRESS}>'
-    msg['To'] = dest
+    msg['To'] = complaint.feedback.email
     msg['CC'] = cc
     msg.set_content('HTML disabled?')
 
     with open('feedback.html', 'r') as f:
         html = f.read()
         html = html.replace('RECORD_ID', f'{complaint.id}')
+        html = html.replace('REMARKS', f'{complaint.feedback.remarks}')
     msg.add_alternative(html, subtype='html')
-    for doc in complaint.docs.all():
+    for doc in complaint.feedback.docs.all():
         with open(doc.file.path, 'rb') as file:
             file_data = file.read()
             file_name = os.path.basename(doc.file.name)
@@ -66,3 +67,4 @@ def send_feedback(complaint, dest, cc=None):
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
         smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
         smtp.send_message(msg)
+    print(f'Feedback sent to: {complaint.feedback.email}')

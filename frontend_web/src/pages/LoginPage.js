@@ -38,8 +38,7 @@ function LoginPage(props) {
     <Redirect to={redirect} />
   ) : (
     <>
-      <span></span>
-      <div className="login-page">
+      <div className="login-page box-shadow">
         <div className="login-header d-flex mb-1 p-1">
           <h3>Twiga - CCMS</h3>
           <img

@@ -66,11 +66,6 @@ class Complaint(models.Model):
                                   on_delete=models.PROTECT,
                                   null=True,
                                   related_name='closed_complaints')
-    feedback_by = models.ForeignKey(to=User,
-                                    on_delete=models.PROTECT,
-                                    null=True,
-                                    related_name='feedback_complaints')
-    feedback_at = models.DateTimeField(null=True)
 
     def __str__(self):
         return f'{self.open_date.strftime("%d/%m/%Y")} - {self.client_name}'
@@ -88,3 +83,27 @@ class Document(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Feedback(models.Model):
+    email = models.CharField(max_length=100)
+    remarks = models.CharField(max_length=500)
+    feedback_by = models.ForeignKey(to=User,
+                                    on_delete=models.PROTECT,
+                                    null=True,
+                                    related_name='feedback_complaints')
+    feedback_at = models.DateTimeField(null=True)
+    complaint = models.OneToOneField(to=Complaint, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.remarks
+
+
+class FeedbackDocument(models.Model):
+    file = models.FileField(upload_to='feedback_docs')
+    feedback = models.ForeignKey(to=Feedback,
+                                 related_name='docs',
+                                 on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.file.name

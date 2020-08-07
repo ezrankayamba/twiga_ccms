@@ -154,7 +154,7 @@ export const UPDATE_DETAILS_COMPLAINT = gql`
 
 export const SEND_FEEDBACK = gql`
   mutation sendFeedback(
-    $details: String!
+    $details: [FileType]
     $id: ID!
     $email: String!
     $remarks: String

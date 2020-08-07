@@ -43,6 +43,11 @@ class NatureSummaryType(graphene.ObjectType):
     count_done = graphene.Int()
 
 
+class FileType(graphene.InputObjectType):
+    filename = graphene.String()
+    data = graphene.String()
+
+
 class StatusSummaryType(graphene.ObjectType):
     name = graphene.String()
     count = graphene.Int()
@@ -201,17 +206,19 @@ class ComplaintAssignMutation(graphene.Mutation):
         return ComplaintAssignMutation(complaint=compl)
 
 
-def data_uri_to_file(data, filename='temp'):
+def data_uri_to_file(file):
+    data = file['data']
+    filename = file.filename
     format, imgstr = data.split(';base64,')  # format ~= data:image/X,
     ext = format.split('/')[-1]  # guess file extension
-    file = ContentFile(base64.b64decode(imgstr), name=f'{filename}.' + ext)
+    file = ContentFile(base64.b64decode(imgstr), name=f'{filename}')
     return file
 
 
 class ComplaintFeedbackMutation(graphene.Mutation):
     class Arguments:
         id = graphene.ID(required=True)
-        details = graphene.String(required=True)
+        details = graphene.List(FileType)
         email = graphene.String(required=True)
         remarks = graphene.String(required=False)
 
@@ -222,16 +229,20 @@ class ComplaintFeedbackMutation(graphene.Mutation):
         user = info.context.user
         compl = models.Complaint.objects.get(pk=id)
 
-        file = data_uri_to_file(details, filename=f'complaint-details-{id}')
-        doc = models.Document.objects.create(name='Details',
-                                             complaint=compl,
-                                             file=file)
-        compl.feedback_by = user
+        files = list(map(data_uri_to_file, details))
+        feedback = models.Feedback.objects.create(
+            remarks=remarks,
+            complaint=compl,
+            feedback_by=user,
+            feedback_at=datetime.datetime.now(),
+            email=email)
+        for file in files:
+            doc = models.FeedbackDocument.objects.create(feedback=feedback,
+                                                         file=file)
         compl.status = models.STATUS_FEEDBACK_SENT
-        compl.feedback_at = datetime.datetime.now()
         compl.save()
         url = 'https://ccms.nezatech.co.tz/complaints'
-        gmail.send_feedback(compl, email, cc=user.email)
+        gmail.send_feedback(compl, cc=user.email)
         return ComplaintFeedbackMutation(complaint=compl)
 
 

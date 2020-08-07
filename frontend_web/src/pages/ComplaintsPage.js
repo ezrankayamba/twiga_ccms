@@ -67,7 +67,7 @@ function ComplaintsPage() {
       name: "updateDetails",
       label: "",
       render: (row) =>
-        row.assignedTo && row.status !== "COMPLETED" ? (
+        row.status === "ASSIGNED" ? (
           <NavLink
             className="btn btn-light p-1 d-flex align-left"
             to={`/complaints/update/${row.id}`}

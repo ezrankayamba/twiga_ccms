@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Modal from "../../components/modals/Modal";
 import { useMutation } from "@apollo/react-hooks";
 import { SEND_FEEDBACK, COMPLAINTS } from "../../helpers/GraphQL";
 import { Redirect } from "react-router-dom";
@@ -10,12 +9,13 @@ function FeedbackForm({ complaint, img }) {
   const [redirect, setRedirect] = useState(null);
   const [email, setEmail] = useState(null);
   const [remarks, setRemarks] = useState(null);
+  const [attachments, setAttachments] = useState([]);
 
   function sendNow(e) {
     e.preventDefault();
     let params = {
       id: complaint.id,
-      details: img,
+      details: attachments,
       email: email,
       remarks: remarks,
     };
@@ -28,11 +28,32 @@ function FeedbackForm({ complaint, img }) {
       (res) => console.log("Error: ", res)
     );
   }
+  function attachmentsChangeHandler(e) {
+    let files = [];
+
+    let updateAttachements = (files) => {
+      setAttachments(files);
+    };
+
+    let theFiles = e.target.files;
+    for (let i = 0; i < theFiles.length; i++) {
+      const reader = new FileReader();
+      let file = theFiles[i];
+      reader.addEventListener("load", () => {
+        let data = reader.result;
+        files.push({ filename: file.name, data: data });
+        if (files.length === theFiles.length) {
+          updateAttachements(files);
+        }
+      });
+      reader.readAsDataURL(file);
+    }
+  }
   return redirect ? (
     <Redirect to={redirect} />
   ) : (
     <div>
-      <form className="form" onSubmit={sendNow}>
+      <form className="form" onSubmit={sendNow} encType="multipart/form-data">
         <div>
           <Input
             name="email"
@@ -46,6 +67,15 @@ function FeedbackForm({ complaint, img }) {
             type="textarea"
             label="Remarks"
             onChange={(e) => setRemarks(e.target.value)}
+            required
+          />
+          <Input
+            name="attachments[]"
+            type="file"
+            label="Attachments"
+            multiple
+            onChange={attachmentsChangeHandler}
+            required
           />
         </div>
         <div className="form-footer">

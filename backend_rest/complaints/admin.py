@@ -9,6 +9,8 @@ import io
 # admin.site.register(models.Nature)
 admin.site.register(models.Complaint)
 admin.site.register(models.Document)
+admin.site.register(models.FeedbackDocument)
+admin.site.register(models.Feedback)
 
 
 @admin.register(models.Location)

@@ -1,6 +1,8 @@
 .login-page {
   width: 360px;
   margin: auto;
+  grid-row-start: 2;
+  box-shadow: black;
 }
 
 .login-page img {
