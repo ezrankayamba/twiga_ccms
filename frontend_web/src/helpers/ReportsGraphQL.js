@@ -27,3 +27,12 @@ export const LOCATION_SUMMARY = gql`
     }
   }
 `;
+
+export const KPI_SUMMARY = gql`
+  query kpi {
+    kpiSummary {
+      name
+      count
+    }
+  }
+`;

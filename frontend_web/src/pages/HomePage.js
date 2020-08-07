@@ -2,6 +2,7 @@ import React from "react";
 import ComplaintsByNatureGraph from "./dashboard/ComplaintsByNatureGraph";
 import ComplaintsByStatusGraph from "./dashboard/ComplaintsByStatusGraph";
 import ComplaintsByLocationGraph from "./dashboard/ComplaintsByLocationGraph";
+import ComplaintsKPIGraph from "./dashboard/ComplaintsKPIGraph";
 
 function HomePage() {
   return (
@@ -9,6 +10,7 @@ function HomePage() {
       <ComplaintsByStatusGraph />
       <ComplaintsByLocationGraph />
       <ComplaintsByNatureGraph />
+      <ComplaintsKPIGraph />
     </div>
   );
 }

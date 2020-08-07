@@ -58,6 +58,11 @@ class StatusSummaryType(graphene.ObjectType):
     count = graphene.Int()
 
 
+class KPISummaryType(graphene.ObjectType):
+    name = graphene.String()
+    count = graphene.Int()
+
+
 class LocationSummaryType(graphene.ObjectType):
     loc_name = graphene.String()
     loc_count = graphene.Int()
@@ -75,6 +80,7 @@ class Query(object):
     user = graphene.Field(UserType, id=graphene.ID())
     nature_summary = graphene.List(NatureSummaryType)
     status_summary = graphene.List(StatusSummaryType)
+    kpi_summary = graphene.List(KPISummaryType)
     location_summary = graphene.List(LocationSummaryType)
     complaint_attachments = graphene.List(DocumentType,
                                           complaint_id=graphene.ID())
@@ -95,6 +101,11 @@ class Query(object):
     @login_required
     def resolve_status_summary(self, info, **kwargs):
         qs = reports.get_complaints_status_summary()
+        return qs
+
+    @login_required
+    def resolve_kpi_summary(self, info, **kwargs):
+        qs = reports.get_weekly_kpi()
         return qs
 
     @login_required
