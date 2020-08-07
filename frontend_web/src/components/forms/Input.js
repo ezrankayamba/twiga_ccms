@@ -1,8 +1,8 @@
 import React from "react";
 
-function Input({ label, name, help, type = "text", ...props }) {
+function Input({ label, name, help, type = "text", cls, ...props }) {
   return (
-    <div className="input-wrap">
+    <div className={`input-wrap ${cls || ""}`}>
       <label htmlFor={name}>{label}</label>
       {type === "textarea" ? (
         <textarea name={name} id={name} {...props} />

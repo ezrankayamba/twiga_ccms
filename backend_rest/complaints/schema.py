@@ -22,6 +22,11 @@ class UserType(DjangoObjectType):
         model = User
 
 
+class DocumentType(DjangoObjectType):
+    class Meta:
+        model = models.Document
+
+
 class NatureType(DjangoObjectType):
     class Meta:
         model = models.Nature
@@ -71,21 +76,28 @@ class Query(object):
     nature_summary = graphene.List(NatureSummaryType)
     status_summary = graphene.List(StatusSummaryType)
     location_summary = graphene.List(LocationSummaryType)
+    complaint_attachments = graphene.List(DocumentType,
+                                          complaint_id=graphene.ID())
 
+    @login_required
     def resolve_natures(self, info, **kwargs):
         return models.Nature.objects.all()
 
+    @login_required
     def resolve_locations(self, info, **kwargs):
         return models.Location.objects.all()
 
+    @login_required
     def resolve_nature_summary(self, info, **kwargs):
         qs = reports.get_nature_summary()
         return qs
 
+    @login_required
     def resolve_status_summary(self, info, **kwargs):
         qs = reports.get_complaints_status_summary()
         return qs
 
+    @login_required
     def resolve_location_summary(self, info, **kwargs):
         qs = reports.get_location_summary()
         return qs
@@ -105,6 +117,11 @@ class Query(object):
     def resolve_user(self, info, id, **kwargs):
         user = User.objects.get(pk=id)
         return user
+
+    @login_required
+    def resolve_complaint_attachments(self, info, complaint_id, **kwargs):
+        docs = models.Document.objects.filter(complaint_id=complaint_id)
+        return docs
 
     @login_required
     def resolve_complaints(self,
@@ -206,6 +223,38 @@ class ComplaintAssignMutation(graphene.Mutation):
         return ComplaintAssignMutation(complaint=compl)
 
 
+class RegisterComplaintMutation(graphene.Mutation):
+    class Arguments:
+        details = graphene.String()
+        clientName = graphene.String()
+        openDate = graphene.DateTime()
+        nature = graphene.ID()
+        location = graphene.ID()
+        attachments = graphene.List(FileType)
+
+    complaint = graphene.Field(ComplaintType)
+
+    @login_required
+    def mutate(self,
+               info,
+               details,
+               clientName,
+               openDate,
+               nature,
+               location,
+               attachments=[]):
+        user = info.context.user
+        compl = models.Complaint.objects.create(details=details,
+                                                client_name=clientName,
+                                                open_date=openDate,
+                                                nature_id=nature,
+                                                location_id=location)
+        files = list(map(data_uri_to_file, attachments))
+        for file in files:
+            doc = models.Document.objects.create(complaint=compl, file=file)
+        return RegisterComplaintMutation(complaint=compl)
+
+
 def data_uri_to_file(file):
     data = file['data']
     filename = file.filename
@@ -218,24 +267,23 @@ def data_uri_to_file(file):
 class ComplaintFeedbackMutation(graphene.Mutation):
     class Arguments:
         id = graphene.ID(required=True)
-        details = graphene.List(FileType)
+        attachments = graphene.List(FileType)
         email = graphene.String(required=True)
         remarks = graphene.String(required=False)
 
     complaint = graphene.Field(ComplaintType)
 
     @login_required
-    def mutate(self, info, id, details, email, remarks=None):
+    def mutate(self, info, id, email, remarks, attachments=[]):
         user = info.context.user
         compl = models.Complaint.objects.get(pk=id)
-
-        files = list(map(data_uri_to_file, details))
         feedback = models.Feedback.objects.create(
             remarks=remarks,
             complaint=compl,
             feedback_by=user,
             feedback_at=datetime.datetime.now(),
             email=email)
+        files = list(map(data_uri_to_file, attachments))
         for file in files:
             doc = models.FeedbackDocument.objects.create(feedback=feedback,
                                                          file=file)
@@ -267,12 +315,21 @@ class ComplaintDetailsUpdateMutation(graphene.Mutation):
         financial_impact = graphene.String()
         cost_center = graphene.String()
         responsible_person = graphene.String()
+        attachments = graphene.List(FileType)
 
     complaint = graphene.Field(ComplaintType)
 
     @login_required
-    def mutate(self, info, id, rca, action_plan, results, financial_impact,
-               cost_center, responsible_person):
+    def mutate(self,
+               info,
+               id,
+               rca,
+               action_plan,
+               results,
+               financial_impact,
+               cost_center,
+               responsible_person,
+               attachments=[]):
         user = info.context.user
         compl = models.Complaint.objects.get(pk=id)
         compl.rca = rca
@@ -285,6 +342,9 @@ class ComplaintDetailsUpdateMutation(graphene.Mutation):
         compl.close_date = datetime.datetime.now()
         compl.closed_by = user
         compl.save()
+        files = list(map(data_uri_to_file, attachments))
+        for file in files:
+            doc = models.Document.objects.create(complaint=compl, file=file)
         return ComplaintDetailsUpdateMutation(complaint=compl)
 
 
@@ -297,6 +357,7 @@ class RootMutation(graphene.ObjectType):
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
     create_complaint = ComplaintMutation.Field()
+    register_complaint = RegisterComplaintMutation.Field()
     assign_complaint = ComplaintAssignMutation.Field()
     update_complaint = ComplaintDetailsUpdateMutation.Field()
     register_user = UserMutation.Field()

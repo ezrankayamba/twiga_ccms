@@ -10,6 +10,7 @@ import {
 } from "../../helpers/GraphQL";
 import MatIcon from "../../components/icons/MatIcon";
 import { NavLink, Redirect } from "react-router-dom";
+import { attachmentsChangeHandler } from "../../helpers/FileUpload";
 
 function NewComplaintRegisterPage({}) {
   let natures = useQuery(NATURES);
@@ -19,11 +20,13 @@ function NewComplaintRegisterPage({}) {
   const [registerComplaint, { loading }] = useMutation(REGISTER_COMPLAINT);
   const natureOptions = natures.data ? natures.data.natures : [];
   const locationOptions = locations.data ? locations.data.locations : [];
+  const [attachments, setAttachments] = useState([]);
   function handleSubmit(e) {
     e.preventDefault();
     registerComplaint({
       variables: {
         ...formData,
+        attachments: attachments,
         openDate: `${formData.openDate}T00:00+00:00`,
       },
       refetchQueries: [{ query: COMPLAINTS }],
@@ -82,7 +85,7 @@ function NewComplaintRegisterPage({}) {
               max={new Date().toISOString().split("T")[0]}
             />
           </div>
-          <div>
+          <div className="register-right">
             <Input
               name="details"
               label="Details"
@@ -91,6 +94,17 @@ function NewComplaintRegisterPage({}) {
               required
               maxLength="300"
               help="Max 300 characters"
+              cls="large"
+            />
+            <Input
+              name="attachments"
+              type="file"
+              label="Attachments"
+              multiple
+              onChange={(e) =>
+                attachmentsChangeHandler(e, (files) => setAttachments(files))
+              }
+              required
             />
           </div>
         </div>

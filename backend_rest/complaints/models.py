@@ -75,14 +75,13 @@ class Complaint(models.Model):
 
 
 class Document(models.Model):
-    name = models.CharField(max_length=100)
     complaint = models.ForeignKey(to=Complaint,
                                   related_name='docs',
                                   on_delete=models.CASCADE)
     file = models.FileField(upload_to='attachments')
 
     def __str__(self):
-        return self.name
+        return self.file.name
 
 
 class Feedback(models.Model):

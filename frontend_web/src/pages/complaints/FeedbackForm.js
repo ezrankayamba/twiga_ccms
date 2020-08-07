@@ -3,6 +3,7 @@ import { useMutation } from "@apollo/react-hooks";
 import { SEND_FEEDBACK, COMPLAINTS } from "../../helpers/GraphQL";
 import { Redirect } from "react-router-dom";
 import Input from "../../components/forms/Input";
+import { attachmentsChangeHandler } from "../../helpers/FileUpload";
 
 function FeedbackForm({ complaint, img }) {
   const [sendFeedback, {}] = useMutation(SEND_FEEDBACK);
@@ -15,7 +16,7 @@ function FeedbackForm({ complaint, img }) {
     e.preventDefault();
     let params = {
       id: complaint.id,
-      details: attachments,
+      attachments: attachments,
       email: email,
       remarks: remarks,
     };
@@ -28,27 +29,7 @@ function FeedbackForm({ complaint, img }) {
       (res) => console.log("Error: ", res)
     );
   }
-  function attachmentsChangeHandler(e) {
-    let files = [];
 
-    let updateAttachements = (files) => {
-      setAttachments(files);
-    };
-
-    let theFiles = e.target.files;
-    for (let i = 0; i < theFiles.length; i++) {
-      const reader = new FileReader();
-      let file = theFiles[i];
-      reader.addEventListener("load", () => {
-        let data = reader.result;
-        files.push({ filename: file.name, data: data });
-        if (files.length === theFiles.length) {
-          updateAttachements(files);
-        }
-      });
-      reader.readAsDataURL(file);
-    }
-  }
   return redirect ? (
     <Redirect to={redirect} />
   ) : (
@@ -70,11 +51,13 @@ function FeedbackForm({ complaint, img }) {
             required
           />
           <Input
-            name="attachments[]"
+            name="attachments"
             type="file"
             label="Attachments"
             multiple
-            onChange={attachmentsChangeHandler}
+            onChange={(e) =>
+              attachmentsChangeHandler(e, (files) => setAttachments(files))
+            }
             required
           />
         </div>

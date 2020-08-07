@@ -80,3 +80,17 @@ button {
   border-radius: 0.5em;
   padding: 1em;
 }
+.text-ellipsis {
+  max-width: 16em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.borded-link {
+  padding: 0.2em 0.4em;
+  border: 1px solid #ddd;
+  border-radius: 0.4em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

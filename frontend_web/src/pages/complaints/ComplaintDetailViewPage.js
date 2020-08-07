@@ -1,17 +1,14 @@
 import React, { useState } from "react";
-import { withRouter, Redirect } from "react-router";
-import {
-  GET_COMPLAINT,
-  SEND_FEEDBACK,
-  COMPLAINTS,
-} from "../../helpers/GraphQL";
+import { withRouter } from "react-router";
+import { GET_COMPLAINT } from "../../helpers/GraphQL";
 import useProfile from "../../components/hooks/useProfile";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 import { NavLink } from "react-router-dom";
 import MatIcon from "../../components/icons/MatIcon";
 import { useRef } from "react";
 import Modal from "../../components/modals/Modal";
 import FeedbackForm from "./FeedbackForm";
+import ComplaintAttachements from "./ComplaintAttachements";
 let dayjs = require("dayjs");
 let html2canvas = require("html2canvas");
 
@@ -38,14 +35,6 @@ function ComplaintDetailViewPage({ match }) {
     console.log(`Open: ${open}`, `Close: ${close}`);
     return dayjs(close).diff(dayjs(open), "day");
   }
-  function downloadURI(uri, name) {
-    let link = document.createElement("a");
-    link.download = name;
-    link.href = uri;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
   function detailsImage(e) {
     let btn = e.target;
     console.log(btn);
@@ -61,6 +50,7 @@ function ComplaintDetailViewPage({ match }) {
     );
   }
   const {
+    id,
     clientName,
     location,
     nature,
@@ -69,7 +59,6 @@ function ComplaintDetailViewPage({ match }) {
     actionPlan,
     closeDate,
     costCenter,
-    dueDate,
     financialImpact,
     rca,
     responsiblePerson,
@@ -77,7 +66,6 @@ function ComplaintDetailViewPage({ match }) {
     status,
     assignedTo,
     assignedAt,
-    assignedBy,
     closedBy,
   } = complaint;
   const fmtDate = (strDate) => {
@@ -180,6 +168,7 @@ function ComplaintDetailViewPage({ match }) {
               </span>
             </li>
           </ul>
+          <ComplaintAttachements complaint_id={id} />
           {status === "COMPLETED" && (
             <button className="send-feedback btn ripple" onClick={detailsImage}>
               <MatIcon name="mail_outline" text="Send Feedback To Customer" />

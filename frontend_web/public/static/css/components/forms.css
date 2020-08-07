@@ -16,7 +16,7 @@
 .form .input-wrap {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  /* height: 100%; */
 }
 .form .input-wrap label {
   padding: 0.4em 0 0.1em;
@@ -34,7 +34,7 @@
   border: 1px solid rgb(180, 180, 180);
   border-radius: 0.2em;
   outline: none;
-  height: 100%;
+  /* height: 100%; */
 }
 
 .form .form-footer {
@@ -102,4 +102,14 @@
 }
 .form.form-medium {
   max-width: 24em;
+}
+.register-right {
+  display: flex;
+  flex-direction: column;
+}
+.register-right .input-wrap.large {
+  flex-grow: 1;
+}
+.register-right .input-wrap.large textarea {
+  height: 100%;
 }

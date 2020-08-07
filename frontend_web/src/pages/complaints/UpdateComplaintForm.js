@@ -10,11 +10,13 @@ import { Redirect, NavLink } from "react-router-dom";
 import MatIcon from "../../components/icons/MatIcon";
 import { withRouter } from "react-router";
 import useProfile from "../../components/hooks/useProfile";
+import { attachmentsChangeHandler } from "../../helpers/FileUpload";
 
 function UpdateComplaintForm({ match }) {
   useProfile();
   const [redirect, setRedirect] = useState(null);
   const [formData, setFormData] = useState(new Map());
+  const [attachments, setAttachments] = useState([]);
 
   const { loading, error, data } = useQuery(GET_COMPLAINT, {
     variables: { id: match.params.id },
@@ -37,6 +39,7 @@ function UpdateComplaintForm({ match }) {
       variables: {
         ...formData,
         ...prev,
+        attachments: attachments,
         id: complaint.id,
       },
       refetchQueries: [{ query: COMPLAINTS }],
@@ -112,6 +115,16 @@ function UpdateComplaintForm({ match }) {
             label="Responsible Person"
             {...inputsConf}
             defaultValue={complaint.responsiblePerson}
+          />
+          <Input
+            name="attachments"
+            type="file"
+            label="Attachments"
+            multiple
+            onChange={(e) =>
+              attachmentsChangeHandler(e, (files) => setAttachments(files))
+            }
+            required
           />
         </div>
         <div className="form-footer">

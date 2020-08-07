@@ -77,6 +77,14 @@ export const NATURES = gql`
     }
   }
 `;
+export const COMPLAINT_ATTACHMENTS = gql`
+  query getComplAttachments($complaint_id: ID!) {
+    complaintAttachments(complaintId: $complaint_id) {
+      id
+      file
+    }
+  }
+`;
 export const LOCATIONS = gql`
   query getLocations {
     locations {
@@ -93,17 +101,17 @@ export const REGISTER_COMPLAINT = gql`
     $openDate: DateTime!
     $nature: ID!
     $location: ID!
+    $attachments: [FileType]
   ) {
-    createComplaint(
-      input: {
-        details: $details
-        clientName: $clientName
-        nature: $nature
-        location: $location
-        openDate: $openDate
-      }
+    registerComplaint(
+      details: $details
+      clientName: $clientName
+      nature: $nature
+      location: $location
+      openDate: $openDate
+      attachments: $attachments
     ) {
-      result {
+      complaint {
         id
       }
     }
@@ -134,6 +142,7 @@ export const UPDATE_DETAILS_COMPLAINT = gql`
     $financialImpact: String!
     $costCenter: String!
     $responsiblePerson: String!
+    $attachments: [FileType]
   ) {
     updateComplaint(
       id: $id
@@ -143,6 +152,7 @@ export const UPDATE_DETAILS_COMPLAINT = gql`
       financialImpact: $financialImpact
       costCenter: $costCenter
       responsiblePerson: $responsiblePerson
+      attachments: $attachments
     ) {
       complaint {
         id
@@ -154,12 +164,17 @@ export const UPDATE_DETAILS_COMPLAINT = gql`
 
 export const SEND_FEEDBACK = gql`
   mutation sendFeedback(
-    $details: [FileType]
+    $attachments: [FileType]
     $id: ID!
     $email: String!
     $remarks: String
   ) {
-    feedback(details: $details, id: $id, email: $email, remarks: $remarks) {
+    feedback(
+      attachments: $attachments
+      id: $id
+      email: $email
+      remarks: $remarks
+    ) {
       complaint {
         id
         clientName
