@@ -16,11 +16,15 @@ function ComplaintAttachements({ complaint_id }) {
       <li>
         <b>Attachments</b>
       </li>
-      {attachments.map((doc) => (
-        <li key={doc.id}>
-          <Attachment doc={doc} />
-        </li>
-      ))}
+      {attachments.length ? (
+        attachments.map((doc) => (
+          <li key={doc.id}>
+            <Attachment doc={doc} />
+          </li>
+        ))
+      ) : (
+        <li>None</li>
+      )}
     </ul>
   );
 }
