@@ -3,7 +3,7 @@ import React from "react";
 function Table({ columns, data, idCol = "id" }) {
   return (
     <div className="table-container">
-      <table>
+      <table className="table-scrollable">
         <thead>
           <tr>
             {columns.map((col) => (

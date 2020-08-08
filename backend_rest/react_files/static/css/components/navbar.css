@@ -65,3 +65,9 @@
 .user-profile-nav b {
   color: #999;
 }
+
+@media only screen and (max-width: 600px) {
+  .nav-links li {
+    margin: 0 0.2em;
+  }
+}

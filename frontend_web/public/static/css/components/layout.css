@@ -10,7 +10,15 @@
   margin: 0 auto;
   height: 100%;
   position: relative;
+  overflow-x: auto;
 }
 .page-content {
   padding: 0 0.4em;
+}
+
+@media only screen and (max-width: 600px) {
+  .container .content {
+    width: 100vh;
+    font-size: 0.9em;
+  }
 }

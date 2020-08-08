@@ -86,7 +86,6 @@
 .grid-form-details p {
   background: #ffffff;
   padding: 0.4rem;
-
   font-size: 0.8em;
 }
 
@@ -112,4 +111,13 @@
 }
 .register-right .input-wrap.large textarea {
   height: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  .form .form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .form.form-medium {
+    width: 100vw;
+  }
 }

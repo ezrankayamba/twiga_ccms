@@ -58,3 +58,17 @@ td.col-ellipsis {
 .pagination .btn-wrap button:disabled * {
   color: rgb(156, 152, 152);
 }
+.table-scrollable {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 56vh;
+}
+
+.table-scrollable thead th {
+  position: sticky;
+  top: 0;
+  background: #f9fcfc;
+}
+
+@media only screen and (max-width: 600px) {
+}
