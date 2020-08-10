@@ -33,6 +33,7 @@ export const KPI_SUMMARY = gql`
     kpiSummary {
       name
       count
+      natureName
     }
   }
 `;

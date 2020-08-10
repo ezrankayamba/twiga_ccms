@@ -60,6 +60,7 @@ class StatusSummaryType(graphene.ObjectType):
 
 class KPISummaryType(graphene.ObjectType):
     name = graphene.String()
+    nature_name = graphene.String()
     count = graphene.Int()
 
 

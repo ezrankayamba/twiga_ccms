@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/react-hooks";
 import PieChart from "../../components/graph/PieChart";
 import useProfile from "../../components/hooks/useProfile";
 import BarGraph from "../../components/graph/BarGraph";
+import { ColorsHelper } from "../../helpers/ColorsHelper";
 
 function ComplaintsKPIGraph() {
   useProfile();
@@ -24,19 +25,33 @@ function ComplaintsKPIGraph() {
     { name: "Above 8 weeks", count: 0 },
   ];
   console.log(data.kpiSummary);
+
+  let natureList = data.kpiSummary
+    .map((d) => d.natureName)
+    .filter((v, i, a) => a.indexOf(v) === i);
+  let res = natureList.map((nat) => {
+    return {
+      label: nat,
+      backgroundColor: ColorsHelper.randomColor(),
+      data: placeHolder.map((p) => {
+        let x = data.kpiSummary.find(
+          (d) => d.natureName === nat && d.name === p.name
+        );
+        return x ? x.count : 0;
+      }),
+    };
+  });
+
+  console.log(res);
+
   const meta = {
-    data: [
-      {
-        ...allProps,
-        data: data.kpiSummary.map((r) => r.count),
-        label: "KPI",
-      },
-    ],
+    data: res,
     labels: placeHolder.map((r) => r.name),
     beginAtZero: true,
   };
   return (
     <BarGraph
+      stacked={true}
       meta={meta}
       title="Complaints KPI"
       graphId="complaints-kpi-summary"

@@ -45,5 +45,7 @@ def get_weekly_kpi():
                   When(duration__lte=wk(8), then=Value('7-8 weeks')),
                   default=Value('Above 8 weeks'),
                   output_field=CharField()))
-
-    return qs.values('name').annotate(count=Count('name')).order_by('name')
+    qs = qs.annotate(nature_name=F('nature__name'))
+    return qs.values('name',
+                     'nature_name').annotate(count=Count('name')).order_by(
+                         'name', 'nature_name')

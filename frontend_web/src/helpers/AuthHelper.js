@@ -1,4 +1,3 @@
-import { BASE_URL, CLIENT_ID, CLIENT_SECRET } from "../conf";
 const ACCESS_TOKEN = "AccessToken";
 
 const AuthHelper = {
