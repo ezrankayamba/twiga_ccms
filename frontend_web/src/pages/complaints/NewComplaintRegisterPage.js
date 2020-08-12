@@ -104,7 +104,6 @@ function NewComplaintRegisterPage({}) {
               onChange={(e) =>
                 attachmentsChangeHandler(e, (files) => setAttachments(files))
               }
-              required
             />
           </div>
         </div>

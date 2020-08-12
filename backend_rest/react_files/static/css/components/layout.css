@@ -1,24 +1,12 @@
-#root {
-  width: 100vw;
-  height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  gap: 0.4em;
-}
-.container .content {
-  width: 80vw;
-  margin: 0 auto;
-  height: 100%;
-  position: relative;
+.page-content .content {
+  max-width: 100%;
   overflow-x: auto;
+  padding: 0.4em;
 }
-.page-content {
-  padding: 0 0.4em;
-}
-
-@media only screen and (max-width: 600px) {
-  .container .content {
-    width: 100vh;
-    font-size: 0.9rem;
+@media only screen and (min-width: 600px) {
+  .navbar .content,
+  .page-content .content {
+    max-width: 72%;
+    margin: auto;
   }
 }

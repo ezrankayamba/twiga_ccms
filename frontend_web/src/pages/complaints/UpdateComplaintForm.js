@@ -124,7 +124,6 @@ function UpdateComplaintForm({ match }) {
             onChange={(e) =>
               attachmentsChangeHandler(e, (files) => setAttachments(files))
             }
-            required
           />
         </div>
         <div className="form-footer">
