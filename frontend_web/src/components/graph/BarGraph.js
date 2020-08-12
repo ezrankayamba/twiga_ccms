@@ -18,6 +18,10 @@ const BarGraph = ({
     };
     console.log(data);
     const options = {
+      legend: {
+        display: window.screen.width > 600,
+        position: "right",
+      },
       plugins: {
         datalabels: {
           display: false,

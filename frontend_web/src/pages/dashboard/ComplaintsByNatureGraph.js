@@ -3,8 +3,10 @@ import { NATURE_SUMMARY } from "../../helpers/ReportsGraphQL";
 import { useQuery } from "@apollo/react-hooks";
 import BarGraph from "../../components/graph/BarGraph";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import useProfile from "../../components/hooks/useProfile";
 
 function ComplaintsByNatureGraph(props) {
+  useProfile();
   const { loading, data } = useQuery(NATURE_SUMMARY);
   if (loading) return null;
   console.log(data);
