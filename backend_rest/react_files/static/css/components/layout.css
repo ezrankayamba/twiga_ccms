@@ -19,6 +19,6 @@
 @media only screen and (max-width: 600px) {
   .container .content {
     width: 100vh;
-    font-size: 0.9em;
+    font-size: 0.9rem;
   }
 }
