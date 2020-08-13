@@ -42,14 +42,12 @@ function ComplaintsKPIGraph() {
     };
   });
 
-  console.log(res);
-
   const meta = {
     data: res,
     labels: placeHolder.map((r) => r.name),
     beginAtZero: true,
   };
-  console.log("Meta: ", meta);
+
   return (
     <BarGraph
       stacked={true}

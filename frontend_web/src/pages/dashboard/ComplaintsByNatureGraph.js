@@ -39,8 +39,6 @@ function ComplaintsByNatureGraph(props) {
     };
   });
 
-  console.log(res);
-
   const meta = {
     data: res,
     labels: natureList.map((r) => r),
@@ -50,7 +48,7 @@ function ComplaintsByNatureGraph(props) {
     <BarGraph
       stacked={true}
       meta={meta}
-      title="Complaints KPI"
+      title="Complaints Nature Summary"
       graphId="complaints-nature-summary"
     />
   );
