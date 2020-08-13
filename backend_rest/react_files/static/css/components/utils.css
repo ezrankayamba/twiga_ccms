@@ -32,6 +32,9 @@ button {
 .d-flex.align-left {
   justify-content: flex-start;
 }
+.d-flex.align-bottom {
+  align-items: flex-end;
+}
 
 .m-1 {
   margin: 0.4em;
@@ -93,4 +96,7 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.w-100 {
+  width: 100%;
 }

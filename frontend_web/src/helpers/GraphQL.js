@@ -1,8 +1,22 @@
 import { gql } from "apollo-boost";
 
 export const COMPLAINTS = gql`
-  query fetchComplaints($pageNo: Int, $pageSize: Int) {
-    complaints(pageNo: $pageNo, pageSize: $pageSize) {
+  query fetchComplaints(
+    $pageNo: Int
+    $pageSize: Int
+    $clientName: String
+    $location: Int
+    $nature: Int
+    $status: String
+  ) {
+    complaints(
+      pageNo: $pageNo
+      pageSize: $pageSize
+      clientName: $clientName
+      location: $location
+      nature: $nature
+      status: $status
+    ) {
       id
       clientName
       location {
@@ -179,6 +193,15 @@ export const SEND_FEEDBACK = gql`
         id
         clientName
       }
+    }
+  }
+`;
+
+export const GET_STATUSES = gql`
+  query getStatuses {
+    statuses {
+      id
+      name
     }
   }
 `;

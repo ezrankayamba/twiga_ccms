@@ -4,8 +4,8 @@ export const NATURE_SUMMARY = gql`
   query natureSummary {
     natureSummary {
       name
-      countAll
-      countDone
+      status
+      count
     }
   }
 `;

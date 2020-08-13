@@ -44,8 +44,8 @@ class ComplaintType(DjangoObjectType):
 
 class NatureSummaryType(graphene.ObjectType):
     name = graphene.String()
-    count_all = graphene.Int()
-    count_done = graphene.Int()
+    status = graphene.String()
+    count = graphene.Int()
 
 
 class FileType(graphene.InputObjectType):
@@ -56,6 +56,11 @@ class FileType(graphene.InputObjectType):
 class StatusSummaryType(graphene.ObjectType):
     name = graphene.String()
     count = graphene.Int()
+
+
+class StatusType(graphene.ObjectType):
+    id = graphene.String()
+    name = graphene.String()
 
 
 class KPISummaryType(graphene.ObjectType):
@@ -71,10 +76,17 @@ class LocationSummaryType(graphene.ObjectType):
 
 class Query(object):
     natures = graphene.List(NatureType)
+    statuses = graphene.List(StatusType)
     locations = graphene.List(LocationType)
-    complaints = graphene.List(ComplaintType,
-                               page_no=graphene.Int(),
-                               page_size=graphene.Int())
+    complaints = graphene.List(
+        ComplaintType,
+        page_no=graphene.Int(),
+        page_size=graphene.Int(),
+        clientName=graphene.String(),
+        location=graphene.Int(),
+        nature=graphene.Int(),
+        status=graphene.String(),
+    )
     complaint = graphene.Field(ComplaintType, id=graphene.ID())
     users = graphene.List(UserType)
     me = graphene.Field(UserType)
@@ -85,6 +97,13 @@ class Query(object):
     location_summary = graphene.List(LocationSummaryType)
     complaint_attachments = graphene.List(DocumentType,
                                           complaint_id=graphene.ID())
+
+    def resolve_statuses(self, info, **kwargs):
+        return list(
+            map(lambda x: {
+                'id': x[0],
+                'name': x[1]
+            }, models.COMPLAINT_STATUS))
 
     @login_required
     def resolve_natures(self, info, **kwargs):
@@ -141,12 +160,21 @@ class Query(object):
                            page_no=1,
                            page_size=DEFAULT_PAGE_SIZE,
                            **kwargs):
-
+        params = {}
+        if 'clientName' in kwargs:
+            params['client_name__contains'] = kwargs['clientName']
+        if 'location' in kwargs:
+            params['location_id'] = kwargs['location']
+        if 'nature' in kwargs:
+            params['nature_id'] = kwargs['nature']
+        if 'status' in kwargs:
+            params['status'] = kwargs['status']
+        print(params)
         start = ((page_no - 1) * page_size)
         to = page_no * page_size
         print(f'Start: {start}, To: {to}')
         qs = models.Complaint.objects.select_related(
-            'nature', 'assigned_to').all()[start:to]
+            'nature', 'assigned_to').filter(**params)[start:to]
 
         return qs
 

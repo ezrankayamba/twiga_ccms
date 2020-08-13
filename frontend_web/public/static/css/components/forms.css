@@ -13,6 +13,12 @@
   grid-template-columns: auto auto;
   gap: 1em;
 }
+.form .inline-fields {
+  display: flex;
+}
+.form .inline-fields .input-wrap {
+  margin-right: 0.4em;
+}
 .form .input-wrap {
   display: flex;
   flex-direction: column;

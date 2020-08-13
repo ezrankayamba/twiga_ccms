@@ -1,6 +1,16 @@
 import React from "react";
+import { useQuery } from "@apollo/react-hooks";
 
-function Select({ label, name, options = [], ...props }) {
+function Select({ label, name, query, options = [], ...props }) {
+  let { loading, data, error } = useQuery(query.name, { skip: query === null });
+  if (loading || error) {
+    return null;
+  }
+
+  if (data) {
+    options = data[query.data];
+  }
+
   return (
     <div className="input-wrap">
       <label htmlFor={name}>{label}</label>

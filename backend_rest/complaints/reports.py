@@ -6,9 +6,9 @@ from datetime import timedelta, datetime
 
 
 def get_nature_summary():
-    qs = models.Nature.objects.raw(
-        "select max(n.id) as id, n.name, sum(case when c.status='Completed' then 1 else 0 end) as count_done, count(c.id) as count_all from complaints_complaint c left join complaints_nature n on c.nature_id=n.id group by n.name"
-    )
+    qs = models.Complaint.objects.annotate(name=F('nature__name')).values(
+        'name',
+        'status').annotate(count=Count('id')).order_by('name', 'status')
     return qs
 
 
