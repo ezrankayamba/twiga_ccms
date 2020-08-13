@@ -27,7 +27,8 @@ th {
   font-size: 0.8em;
 }
 td {
-  line-height: 1.6rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
 }
 td.col-ellipsis {
   max-width: 10em;
