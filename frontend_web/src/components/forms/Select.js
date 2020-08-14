@@ -1,13 +1,16 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
+import { USERS_GET_ME } from "../../helpers/UsersGraphQL";
 
 function Select({ label, name, query, options = [], ...props }) {
-  let { loading, data, error } = useQuery(query.name, { skip: query === null });
+  let { loading, data, error } = useQuery(query ? query.name : USERS_GET_ME, {
+    skip: query === null,
+  });
   if (loading || error) {
     return null;
   }
 
-  if (data) {
+  if (data && query) {
     options = data[query.data];
   }
 
