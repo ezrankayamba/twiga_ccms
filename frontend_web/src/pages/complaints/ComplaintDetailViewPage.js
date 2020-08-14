@@ -151,8 +151,8 @@ function ComplaintDetailViewPage({ match }) {
             )}
             {assignedTo && (
               <li>
-                <MatIcon name="done" /> On {fmtDate(assignedAt)}, Assigned to{" "}
-                {assignedTo.username}
+                <MatIcon name="done" />
+                On {fmtDate(assignedAt)}, Assigned to {assignedTo.username}
               </li>
             )}
             {closedBy && (
