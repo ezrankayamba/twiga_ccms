@@ -54,6 +54,11 @@ const BarGraph = ({
               callback: function (value) {
                 return value.toLocaleString();
               },
+              userCallback: function (label, index, labels) {
+                if (Math.floor(label) === label) {
+                  return label;
+                }
+              },
             },
             type: "linear",
           },
