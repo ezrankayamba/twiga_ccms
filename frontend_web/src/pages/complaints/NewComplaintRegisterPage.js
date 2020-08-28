@@ -11,6 +11,7 @@ import {
 import MatIcon from "../../components/icons/MatIcon";
 import { NavLink, Redirect } from "react-router-dom";
 import { attachmentsChangeHandler } from "../../helpers/FileUpload";
+import { COMPLAINTS_FILTER_VARS } from "../../constants";
 
 function NewComplaintRegisterPage({}) {
   let natures = useQuery(NATURES);
@@ -29,7 +30,10 @@ function NewComplaintRegisterPage({}) {
         attachments: attachments,
         openDate: `${formData.openDate}T00:00+00:00`,
       },
-      refetchQueries: [{ query: COMPLAINTS }],
+      refetchQueries: () => [
+        { query: COMPLAINTS, variables: COMPLAINTS_FILTER_VARS },
+      ],
+      awaitRefetchQueries: true,
     }).then(
       () => setRedirect("/complaints"),
       (res) => console.log("Error: ", res)
