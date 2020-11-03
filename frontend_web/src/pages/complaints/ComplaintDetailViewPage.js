@@ -107,10 +107,6 @@ function ComplaintDetailViewPage({ match }) {
             <label>Details</label>
             <p>{details}</p>
           </div>
-          <div className="span">
-            <label>Details</label>
-            <p>{details}</p>
-          </div>
           <div>
             <label>Action Plan</label>
             <p>{actionPlan}</p>
