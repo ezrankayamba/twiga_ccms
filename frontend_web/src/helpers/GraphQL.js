@@ -8,6 +8,8 @@ export const COMPLAINTS = gql`
     $location: Int
     $nature: Int
     $status: String
+    $dateFrom: Date
+    $dateTo: Date
   ) {
     complaints(
       pageNo: $pageNo
@@ -16,6 +18,8 @@ export const COMPLAINTS = gql`
       location: $location
       nature: $nature
       status: $status
+      dateFrom: $dateFrom
+      dateTo: $dateTo
     ) {
       id
       clientName

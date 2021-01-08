@@ -11,6 +11,7 @@ import datetime
 from . import reports
 import base64
 from django.core.files.base import ContentFile
+from . import utils
 
 DEFAULT_PASS = 'testing321'
 
@@ -86,6 +87,8 @@ class Query(object):
         location=graphene.Int(),
         nature=graphene.Int(),
         status=graphene.String(),
+        date_from=graphene.Date(),
+        date_to=graphene.Date()
     )
     complaint = graphene.Field(ComplaintType, id=graphene.ID())
     users = graphene.List(UserType)
@@ -160,15 +163,7 @@ class Query(object):
                            page_no=1,
                            page_size=DEFAULT_PAGE_SIZE,
                            **kwargs):
-        params = {}
-        if 'clientName' in kwargs:
-            params['client_name__contains'] = kwargs['clientName']
-        if 'location' in kwargs:
-            params['location_id'] = kwargs['location']
-        if 'nature' in kwargs:
-            params['nature_id'] = kwargs['nature']
-        if 'status' in kwargs:
-            params['status'] = kwargs['status']
+        params = utils.params_complaints_filter(kwargs)
         print(params)
         start = ((page_no - 1) * page_size)
         to = page_no * page_size

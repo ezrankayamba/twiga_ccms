@@ -5,6 +5,7 @@ from django.http import HttpResponse, Http404
 from io import BytesIO
 import pandas as pd
 from django.db.models import Count, F, Value
+from . import utils
 
 
 def fmt_date(df, columns):
@@ -15,15 +16,15 @@ def fmt_date(df, columns):
 
 def export_complaints(request):
     kwargs = request.GET
-    params = {}
-    if 'clientName' in kwargs:
-        params['client_name__contains'] = kwargs['clientName']
-    if 'location' in kwargs:
-        params['location_id'] = kwargs['location']
-    if 'nature' in kwargs:
-        params['nature_id'] = kwargs['nature']
-    if 'status' in kwargs:
-        params['status'] = kwargs['status']
+    # if 'clientName' in kwargs:
+    #     params['client_name__contains'] = kwargs['clientName']
+    # if 'location' in kwargs:
+    #     params['location_id'] = kwargs['location']
+    # if 'nature' in kwargs:
+    #     params['nature_id'] = kwargs['nature']
+    # if 'status' in kwargs:
+    #     params['status'] = kwargs['status']
+    params = utils.params_complaints_filter(kwargs)
     print(params)
     qs = models.Complaint.objects.filter(**params)
     fields = [

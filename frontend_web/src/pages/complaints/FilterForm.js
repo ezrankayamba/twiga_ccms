@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NATURES, LOCATIONS, GET_STATUSES } from "../../helpers/GraphQL";
 import FilterExport from "../../components/forms/FilterExport";
+import { Dates } from "../../helpers/Dates";
 
 function FilterForm({ handleSubmit, handleExport, filter = {} }) {
   console.log(filter);
@@ -27,6 +28,18 @@ function FilterForm({ handleSubmit, handleExport, filter = {} }) {
       type: "select",
       query: { name: GET_STATUSES, data: "statuses" },
       defaultValue: filter["status"],
+    },
+    {
+      name: "dateFrom",
+      label: "From",
+      type: "date",
+      defaultValue: filter["dateFrom"] || Dates.fmt(Date.now()),
+    },
+    {
+      name: "dateTo",
+      label: "To",
+      type: "date",
+      defaultValue: filter["dateTo"] || Dates.fmt(Date.now()),
     },
   ];
   function handleChange(e) {

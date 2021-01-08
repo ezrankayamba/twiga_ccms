@@ -13,12 +13,14 @@ function FilterExport({
     <div className="filter-export  w-100">
       <form className="form d-flex align-bottom" onSubmit={handleSubmit}>
         <div className="inline-fields">
-          {fields.map((f) => {
+          {fields.map((f, i) => {
             return f.type && f.type === "select" ? (
-              <Select key={f.name} {...f} onChange={handleChange} />
-            ) : (
-              <Input key={f.name} {...f} onChange={handleChange} />
-            );
+              <>
+                <Select key={f.name} {...f} onChange={handleChange} />
+              </>
+            ) : <>
+                <Input key={f.name} {...f} onChange={handleChange} />
+              </>;
           })}
         </div>
         <div className="d-flex">

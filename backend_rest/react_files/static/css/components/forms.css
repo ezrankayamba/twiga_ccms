@@ -15,6 +15,7 @@
 }
 .form .inline-fields {
   display: flex;
+  flex-wrap: wrap;
 }
 .form .inline-fields .input-wrap {
   margin-right: 0.4em;
