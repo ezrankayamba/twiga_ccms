@@ -1,17 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { KPI_SUMMARY } from "../../helpers/ReportsGraphQL";
-import { useQuery } from "@apollo/react-hooks";
+import { useLazyQuery, useQuery } from "@apollo/react-hooks";
 import PieChart from "../../components/graph/PieChart";
 import useProfile from "../../components/hooks/useProfile";
 import BarGraph from "../../components/graph/BarGraph";
 import { ColorsHelper } from "../../helpers/ColorsHelper";
 
-function ComplaintsKPIGraph() {
+function ComplaintsKPIGraph({ filter }) {
   useProfile();
-  const { loading, data, error } = useQuery(KPI_SUMMARY);
+
+  const [fetchData, { loading, data, error }] = useLazyQuery(KPI_SUMMARY, {
+    variables: { ...filter },
+  });
+
+  useEffect(() => {
+    const abortCtrl = new AbortController();
+    console.log(filter)
+    fetchData()
+    return () => {
+      abortCtrl.abort();
+    }
+  }, [filter])
+
   if (loading) return null;
   if (error) return null;
+  if (!data) return null;
   console.log(data);
+
   let allProps = {
     backgroundColor: "rgba(255, 212, 0, .5)",
     borderWidth: 1,

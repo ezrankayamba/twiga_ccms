@@ -94,10 +94,26 @@ class Query(object):
     users = graphene.List(UserType)
     me = graphene.Field(UserType)
     user = graphene.Field(UserType, id=graphene.ID())
-    nature_summary = graphene.List(NatureSummaryType)
-    status_summary = graphene.List(StatusSummaryType)
-    kpi_summary = graphene.List(KPISummaryType)
-    location_summary = graphene.List(LocationSummaryType)
+    nature_summary = graphene.List(
+        NatureSummaryType,
+        date_from=graphene.Date(),
+        date_to=graphene.Date()
+    )
+    status_summary = graphene.List(
+        StatusSummaryType,
+        date_from=graphene.Date(),
+        date_to=graphene.Date()
+    )
+    kpi_summary = graphene.List(
+        KPISummaryType,
+        date_from=graphene.Date(),
+        date_to=graphene.Date()
+    )
+    location_summary = graphene.List(
+        LocationSummaryType,
+        date_from=graphene.Date(),
+        date_to=graphene.Date()
+    )
     complaint_attachments = graphene.List(DocumentType,
                                           complaint_id=graphene.ID())
 
@@ -118,22 +134,26 @@ class Query(object):
 
     @login_required
     def resolve_nature_summary(self, info, **kwargs):
-        qs = reports.get_nature_summary()
+        params = utils.params_summary_filter(kwargs)
+        qs = reports.get_nature_summary(params)
         return qs
 
     @login_required
     def resolve_status_summary(self, info, **kwargs):
-        qs = reports.get_complaints_status_summary()
+        params = utils.params_summary_filter(kwargs)
+        qs = reports.get_complaints_status_summary(params)
         return qs
 
     @login_required
     def resolve_kpi_summary(self, info, **kwargs):
-        qs = reports.get_weekly_kpi()
+        params = utils.params_summary_filter(kwargs)
+        qs = reports.get_weekly_kpi(params)
         return qs
 
     @login_required
     def resolve_location_summary(self, info, **kwargs):
-        qs = reports.get_location_summary()
+        params = utils.params_summary_filter(kwargs)
+        qs = reports.get_location_summary(params)
         return qs
 
     @login_required

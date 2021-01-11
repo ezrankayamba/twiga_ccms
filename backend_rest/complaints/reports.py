@@ -5,23 +5,25 @@ from django.db.models import Case, When, Q, Value, CharField
 from datetime import timedelta, datetime
 
 
-def get_nature_summary():
-    qs = models.Complaint.objects.annotate(name=F('nature__name')).values(
+def get_nature_summary(params):
+    qs = models.Complaint.objects.filter(**params).annotate(name=F('nature__name')).values(
         'name',
         'status').annotate(count=Count('id')).order_by('name', 'status')
     return qs
 
 
-def get_complaints_status_summary():
+def get_complaints_status_summary(params):
     qs = models.Complaint.objects.raw(
-        "select max(c.id) as id, c.status as name, count(c.id) as count from complaints_complaint c group by c.status"
+        "select max(c.id) as id, c.status as name, count(c.id) as count from complaints_complaint c where c.open_date >= %s and c.open_date <= %s group by c.status", [
+            params['open_date__gt'], params['open_date__lt']]
     )
     return qs
 
 
-def get_location_summary():
+def get_location_summary(params):
     qs = models.Complaint.objects.raw(
-        "select max(c.id) as id, l.name as loc_name, count(c.id) as loc_count from complaints_complaint c left join complaints_location l on c.location_id=l.id group by l.name"
+        "select max(c.id) as id, l.name as loc_name, count(c.id) as loc_count from complaints_complaint c left join complaints_location l on c.location_id=l.id where c.open_date >= %s and c.open_date <= %s group by l.name", [
+            params['open_date__gt'], params['open_date__lt']]
     )
 
     return qs
@@ -31,8 +33,8 @@ def wk(week):
     return timedelta(days=week * 7, hours=0)
 
 
-def get_weekly_kpi():
-    qs = models.Complaint.objects.annotate(
+def get_weekly_kpi(params):
+    qs = models.Complaint.objects.filter(**params).annotate(
         end_date=Case(When(close_date__isnull=True, then=datetime.now()),
                       default='close_date'))
     qs = qs.annotate(duration=ExpressionWrapper(F('end_date') - F('open_date'),

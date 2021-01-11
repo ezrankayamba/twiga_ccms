@@ -1,8 +1,14 @@
 import { gql } from "apollo-boost";
 
 export const NATURE_SUMMARY = gql`
-  query natureSummary {
-    natureSummary {
+  query natureSummary(
+    $dateFrom: Date
+    $dateTo: Date
+    ) {
+    natureSummary(
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+      ) {
       name
       status
       count
@@ -11,8 +17,14 @@ export const NATURE_SUMMARY = gql`
 `;
 
 export const STATUS_SUMMARY = gql`
-  query statusSummary {
-    statusSummary {
+  query statusSummary(
+    $dateFrom: Date
+    $dateTo: Date
+    ) {
+    statusSummary(
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+      ) {
       name
       count
     }
@@ -20,8 +32,14 @@ export const STATUS_SUMMARY = gql`
 `;
 
 export const LOCATION_SUMMARY = gql`
-  query getLocSummary {
-    locationSummary {
+  query getLocSummary(
+    $dateFrom: Date
+    $dateTo: Date
+    ) {
+    locationSummary(
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+      ) {
       locName
       locCount
     }
@@ -29,8 +47,14 @@ export const LOCATION_SUMMARY = gql`
 `;
 
 export const KPI_SUMMARY = gql`
-  query kpi {
-    kpiSummary {
+  query kpi(
+    $dateFrom: Date
+    $dateTo: Date
+    ) {
+    kpiSummary(
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+      ) {
       name
       count
       natureName

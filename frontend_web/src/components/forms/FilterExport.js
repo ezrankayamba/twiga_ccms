@@ -8,6 +8,7 @@ function FilterExport({
   handleSubmit,
   filter,
   handleExport,
+  filterLabel
 }) {
   return (
     <div className="filter-export  w-100">
@@ -24,15 +25,15 @@ function FilterExport({
           })}
         </div>
         <div className="d-flex">
-          <button name="filter">Filter</button>
-          <button
+          <button name="filter">{filterLabel || 'Filter'}</button>
+          {handleExport && <button
             className="ml-1"
             name="export"
             type="button"
             onClick={handleExport}
           >
             Export
-          </button>
+          </button>}
         </div>
       </form>
     </div>

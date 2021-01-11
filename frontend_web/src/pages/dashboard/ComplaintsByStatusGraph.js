@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { STATUS_SUMMARY } from "../../helpers/ReportsGraphQL";
-import { useQuery } from "@apollo/react-hooks";
+import { useLazyQuery, useQuery } from "@apollo/react-hooks";
 import PieChart from "../../components/graph/PieChart";
 import useProfile from "../../components/hooks/useProfile";
 
-function ComplaintsByStatusGraph() {
+function ComplaintsByStatusGraph({ filter }) {
   useProfile();
-  const { loading, data, error } = useQuery(STATUS_SUMMARY);
+  const [fetchData, { loading, data, error }] = useLazyQuery(STATUS_SUMMARY, {
+    variables: { ...filter },
+  });
+
+
+  useEffect(() => {
+    const abortCtrl = new AbortController();
+    console.log(filter)
+    fetchData()
+    return () => {
+      abortCtrl.abort();
+    }
+  }, [filter])
+
   if (loading) return null;
   if (error) return null;
+  if (!data) return null;
   console.log(data);
+
   const meta = {
     data: data.statusSummary.map((r) => {
       return {

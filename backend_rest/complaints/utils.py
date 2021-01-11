@@ -32,3 +32,20 @@ def params_complaints_filter(kwargs_in):
         params['open_date__lt'] = datetime.date.today() + datetime.timedelta(days=1)
 
     return params
+
+
+def params_summary_filter(kwargs_in):
+    print(kwargs_in)
+    params = {}
+    kwargs = dict((camel_to_underscore(k), v) for k, v in kwargs_in.items())
+
+    if 'date_from' in kwargs:
+        params['open_date__gt'] = kwargs['date_from']
+    else:
+        params['open_date__gt'] = datetime.date.today() - datetime.timedelta(days=30)
+    if 'date_to' in kwargs:
+        params['open_date__lt'] = kwargs['date_to'] + datetime.timedelta(days=1)
+    else:
+        params['open_date__lt'] = datetime.date.today() + datetime.timedelta(days=1)
+
+    return params

@@ -1,16 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NATURE_SUMMARY } from "../../helpers/ReportsGraphQL";
-import { useQuery } from "@apollo/react-hooks";
+import { useLazyQuery, useQuery } from "@apollo/react-hooks";
 import BarGraph from "../../components/graph/BarGraph";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import useProfile from "../../components/hooks/useProfile";
 import { ColorsHelper } from "../../helpers/ColorsHelper";
 
-function ComplaintsByNatureGraph(props) {
+function ComplaintsByNatureGraph({ filter }) {
   useProfile();
-  const { loading, data, error } = useQuery(NATURE_SUMMARY);
+
+  const [fetchData, { loading, data, error }] = useLazyQuery(NATURE_SUMMARY, {
+    variables: { ...filter },
+  });
+
+  useEffect(() => {
+    const abortCtrl = new AbortController();
+    console.log(filter)
+    fetchData()
+    return () => {
+      abortCtrl.abort();
+    }
+  }, [filter])
+
   if (loading) return null;
   if (error) return null;
+  if (!data) return null;
   console.log(data);
 
   let placeHolder = [
