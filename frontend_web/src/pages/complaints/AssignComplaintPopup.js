@@ -7,11 +7,11 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 function AssignComplaintPopup({ complaint, onComplete }) {
   let users = useQuery(USERS);
   const [formData, setFormData] = useState(new Map());
-  const [assignTo, { loading }] = useMutation(UPDATE_ASSIGN_COMPLAINT);
+  const [assignTo] = useMutation(UPDATE_ASSIGN_COMPLAINT);
   const userOptions = users.data
     ? users.data.users.map((r) => {
-        return { ...r, name: r.username };
-      })
+      return { ...r, name: r.username };
+    })
     : [];
   console.log(complaint);
   function handleSubmit(e) {

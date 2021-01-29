@@ -12,6 +12,7 @@ from . import reports
 import base64
 from django.core.files.base import ContentFile
 from . import utils
+from django.contrib.auth import authenticate, login
 
 DEFAULT_PASS = 'testing321'
 
@@ -256,6 +257,26 @@ class UserMutation(graphene.Mutation):
         return UserMutation(user=user)
 
 
+class UserPasswordMutation(graphene.Mutation):
+    class Arguments:
+        password = graphene.String(required=True)
+        new_password = graphene.String(required=True)
+
+    user = graphene.Field(UserType)
+
+    @login_required
+    def mutate(self, info, password, new_password):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception('Authentication Failure!')
+        user = authenticate(username=user.username, password=password)
+        if user is None:
+            raise Exception('Authentication Failure!')
+        user.set_password(new_password)
+        user.save()
+        return UserMutation(user=user)
+
+
 class ComplaintAssignMutation(graphene.Mutation):
     class Arguments:
         user_id = graphene.ID(required=True)
@@ -418,6 +439,7 @@ class RootMutation(graphene.ObjectType):
     register_user = UserMutation.Field()
     get_me = GetMeMutation.Field()
     feedback = ComplaintFeedbackMutation.Field()
+    change_password = UserPasswordMutation.Field()
 
 
 root_schema = graphene.Schema(query=RootQuery, mutation=RootMutation)

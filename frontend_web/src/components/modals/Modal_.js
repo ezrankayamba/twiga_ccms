@@ -1,11 +1,9 @@
 import React from "react";
 import MatIcon from "../icons/MatIcon";
-import ReactDom from "react-dom"
-
 
 function Modal({ onClose, title, children, posx, posy, ...props }) {
   const showHideClassName = "modal display-block";
-  return ReactDom.createPortal(
+  return (
     <div className={showHideClassName} {...props}>
       <div className="modal-main">
         <div className="modal-header">
@@ -13,7 +11,7 @@ function Modal({ onClose, title, children, posx, posy, ...props }) {
           <div className="btn-group">
             <button
               type="button"
-              className="btn btn-no-bg text-warning m-1 close-button"
+              className="btn text-warning m-1"
               onClick={onClose}
             >
               <MatIcon name="close" />
@@ -22,7 +20,7 @@ function Modal({ onClose, title, children, posx, posy, ...props }) {
         </div>
         <div className="modal-content">{children}</div>
       </div>
-    </div>, document.getElementById("portal")
+    </div>
   );
 }
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { LOCATION_SUMMARY } from "../../helpers/ReportsGraphQL";
-import { useLazyQuery, useQuery } from "@apollo/react-hooks";
+import { useLazyQuery } from "@apollo/react-hooks";
 import PieChart from "../../components/graph/PieChart";
 import useProfile from "../../components/hooks/useProfile";
 

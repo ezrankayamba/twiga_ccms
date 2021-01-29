@@ -12,7 +12,7 @@ function UserProfile(props) {
     <div className="user-profile-nav">
       <ul>
         <li>
-          <b>{data.me.username}</b>
+          <NavLink exact to="/my-profile">{data.me.username}</NavLink>
         </li>
         <li>
           <NavLink exact to="/login">

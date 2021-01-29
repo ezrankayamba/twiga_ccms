@@ -10,6 +10,7 @@
 @import "./components/login.css";
 @import "./components/dashboard.css";
 @import "./components/complaint.css";
+@import "./components/myprofile.css";
 
 :root {
   --color-primary: #00adb5;

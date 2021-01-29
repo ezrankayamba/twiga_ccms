@@ -2,13 +2,13 @@ import React from "react";
 import { USERS } from "../helpers/UsersGraphQL";
 import NewUserPage from "./users/NewUserPage";
 import { useQuery } from "@apollo/react-hooks";
-import { Route, NavLink, useHistory } from "react-router-dom";
+import { Route, NavLink } from "react-router-dom";
 import MatIcon from "../components/icons/MatIcon";
 import Table from "../components/tables/Table";
 import useProfile from "../components/hooks/useProfile";
 import UpdateUserPage from "./users/UpdateUserPage";
 
-function UserManagementPage(props) {
+function UserManagementPage() {
   useProfile();
   const { loading, error, data } = useQuery(USERS);
   if (loading) return null;

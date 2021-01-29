@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { NATURES, LOCATIONS, GET_STATUSES } from "../../helpers/GraphQL";
 import FilterExport from "../../components/forms/FilterExport";
 import { Dates } from "../../helpers/Dates";
 

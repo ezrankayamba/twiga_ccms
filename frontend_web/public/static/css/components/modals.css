@@ -13,8 +13,9 @@
   background: #ffffff;
   min-height: 4rem;
   min-width: 36%;
-  bottom: 4px;
-  right: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: left;
 }
 
@@ -38,11 +39,7 @@
   justify-content: flex-end;
 }
 
-@media only screen and (min-width: 768px) {
-  .modal-main {
-    right: 1.2rem;
-  }
-}
+
 
 .display-block {
   display: inline-block;
@@ -54,15 +51,24 @@
 
 .modal-title {
   white-space: nowrap;
+  color: #333;
 }
 
 .modal-header {
-  background: #000033;
-  color: #e1e1e1;
+  border-bottom: 1px solid var(--color-light);
+  color: var(--color-light);
 }
+.btn.close-button,
 .close-button {
-  color: #e1e1e1;
+  color: var(--color-light);
 }
 .close-button:hover {
   color: #f1f1f1;
+}
+
+
+@media only screen and (max-width: 600px) {
+  .modal-main {
+    width: 95vw;
+  }
 }

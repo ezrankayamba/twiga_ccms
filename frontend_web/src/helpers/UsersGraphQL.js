@@ -84,3 +84,27 @@ export const GET_USER = gql`
     }
   }
 `;
+
+export const CHANGE_PASSWORD = gql`
+  mutation changePassword(
+    $password: String!
+    $newPassword: String!
+  ) {
+    changePassword(
+      password: $password
+      newPassword: $newPassword
+    ) {
+      user {
+        id
+        username
+        dateJoined
+        firstName
+        lastName
+        lastLogin
+        email
+        isStaff
+        isSuperuser
+      }
+    }
+  }
+`;

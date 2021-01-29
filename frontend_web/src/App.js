@@ -9,6 +9,7 @@ import UserManagementPage from "./pages/UserManagementPage";
 import LoginPage from "./pages/LoginPage";
 import AuthHelper from "./helpers/AuthHelper";
 import { BASE_URL } from "./conf";
+import UserProfilePage from "./pages/users/UserProfilePage";
 const getToken = () => {
   const token = AuthHelper.getToken();
   return token ? `JWT ${token}` : "";
@@ -46,6 +47,9 @@ function App() {
                   </Route>
                   <Route path="/users">
                     <UserManagementPage />
+                  </Route>
+                  <Route path="/my-profile">
+                    <UserProfilePage />
                   </Route>
                 </Switch>
               </div>
