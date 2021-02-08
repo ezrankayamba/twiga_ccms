@@ -62,76 +62,70 @@ function UpdateComplaintForm({ match }) {
   return redirect ? (
     <Redirect to={redirect} />
   ) : (
-    <div className="form-wrap">
-      <div className="toolbar">
-        <div className="titlebar">
-          <NavLink to="/complaints" className="btn btn-light mr-1">
-            <MatIcon name="keyboard_arrow_left" />
-          </NavLink>
-          <h5>Fill complain analysis/resolution</h5>
+      <div className="form-wrap">
+        <div className="toolbar">
+          <div className="titlebar">
+            <NavLink to="/complaints" className="btn btn-light mr-1">
+              <MatIcon name="keyboard_arrow_left" />
+            </NavLink>
+            <h5>Fill complain analysis/resolution</h5>
+          </div>
         </div>
-      </div>
 
-      <form className="form form-flex v-scroll" onSubmit={handleSubmit}>
-        <div className="form-fields">
-          <p>
-            <b>Details:</b> {complaint.details}
-          </p>
-          <Input
-            name="actionPlan"
-            label="Action Plan"
-            {...inputsConf}
-            defaultValue={complaint.actionPlan}
-          />
-          <Input
-            name="rca"
-            label="Root Cause Analysis"
-            {...inputsConf}
-            defaultValue={complaint.rca}
-          />
-          <Input
-            name="results"
-            label="Results"
-            {...inputsConf}
-            defaultValue={complaint.results}
-            maxLength="500"
-            help="Max 500 characters"
-            rows="4"
-          />
-          <Input
-            name="financialImpact"
-            label="Financial Impact"
-            {...inputsConf}
-            defaultValue={complaint.financialImpact}
-          />
-          <Input
-            name="costCenter"
-            label="Cost Center"
-            {...inputsConf}
-            defaultValue={complaint.costCenter}
-          />
-          <Input
-            name="responsiblePerson"
-            label="Responsible Person"
-            {...inputsConf}
-            defaultValue={complaint.responsiblePerson}
-          />
-          <Input
-            name="attachments"
-            type="file"
-            label="Attachments"
-            multiple
-            onChange={(e) =>
-              attachmentsChangeHandler(e, (files) => setAttachments(files))
-            }
-          />
-        </div>
-        <div className="form-footer">
-          <button>Submit</button>
-        </div>
-      </form>
-    </div>
-  );
+        <form className="form form-flex v-scroll" onSubmit={handleSubmit}>
+          <div className="form-fields">
+            <p>
+              <b>Details:</b> {complaint.details}
+            </p>
+            <Input
+              name="rca"
+              label="Root Cause Analysis"
+              {...inputsConf}
+              defaultValue={complaint.rca}
+            />
+            <Input
+              name="results"
+              label="Results"
+              {...inputsConf}
+              defaultValue={complaint.results}
+              maxLength="500"
+              help="Max 500 characters"
+              rows="4"
+            />
+            <Input
+              name="financialImpact"
+              label="Financial Impact"
+              {...inputsConf}
+              defaultValue={complaint.financialImpact}
+            />
+            <Input
+              name="costCenter"
+              label="Cost Center"
+              {...inputsConf}
+              defaultValue={complaint.costCenter}
+            />
+            <Input
+              name="responsiblePerson"
+              label="Responsible Person"
+              {...inputsConf}
+              defaultValue={complaint.responsiblePerson}
+            />
+            <Input
+              name="attachments"
+              type="file"
+              label="Attachments"
+              multiple
+              onChange={(e) =>
+                attachmentsChangeHandler(e, (files) => setAttachments(files))
+              }
+            />
+          </div>
+          <div className="form-footer">
+            <button>Submit</button>
+          </div>
+        </form>
+      </div>
+    );
 }
 
 export default withRouter(UpdateComplaintForm);

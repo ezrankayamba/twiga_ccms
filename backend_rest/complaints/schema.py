@@ -306,6 +306,7 @@ class RegisterComplaintMutation(graphene.Mutation):
         openDate = graphene.DateTime()
         nature = graphene.ID()
         location = graphene.ID()
+        action_plan = graphene.String()
         attachments = graphene.List(FileType)
 
     complaint = graphene.Field(ComplaintType)
@@ -318,13 +319,15 @@ class RegisterComplaintMutation(graphene.Mutation):
                openDate,
                nature,
                location,
+               action_plan,
                attachments=[]):
         user = info.context.user
         compl = models.Complaint.objects.create(details=details,
                                                 client_name=clientName,
                                                 open_date=openDate,
                                                 nature_id=nature,
-                                                location_id=location)
+                                                location_id=location,
+                                                action_plan=action_plan)
         files = list(map(data_uri_to_file, attachments))
         for file in files:
             doc = models.Document.objects.create(complaint=compl, file=file)
@@ -386,7 +389,6 @@ class ComplaintDetailsUpdateMutation(graphene.Mutation):
     class Arguments:
         id = graphene.ID(required=True)
         rca = graphene.String()
-        action_plan = graphene.String()
         results = graphene.String()
         financial_impact = graphene.String()
         cost_center = graphene.String()
@@ -400,7 +402,6 @@ class ComplaintDetailsUpdateMutation(graphene.Mutation):
                info,
                id,
                rca,
-               action_plan,
                results,
                financial_impact,
                cost_center,
@@ -409,7 +410,6 @@ class ComplaintDetailsUpdateMutation(graphene.Mutation):
         user = info.context.user
         compl = models.Complaint.objects.get(pk=id)
         compl.rca = rca
-        compl.action_plan = action_plan
         compl.results = results
         compl.financial_impact = financial_impact
         compl.cost_center = cost_center

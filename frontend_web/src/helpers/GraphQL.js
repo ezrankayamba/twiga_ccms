@@ -119,6 +119,7 @@ export const REGISTER_COMPLAINT = gql`
     $openDate: DateTime!
     $nature: ID!
     $location: ID!
+    $actionPlan: String!
     $attachments: [FileType]
   ) {
     registerComplaint(
@@ -127,6 +128,7 @@ export const REGISTER_COMPLAINT = gql`
       nature: $nature
       location: $location
       openDate: $openDate
+      actionPlan: $actionPlan
       attachments: $attachments
     ) {
       complaint {
@@ -155,7 +157,6 @@ export const UPDATE_DETAILS_COMPLAINT = gql`
   mutation updateDetails(
     $id: ID!
     $rca: String!
-    $actionPlan: String!
     $results: String!
     $financialImpact: String!
     $costCenter: String!
@@ -165,7 +166,6 @@ export const UPDATE_DETAILS_COMPLAINT = gql`
     updateComplaint(
       id: $id
       rca: $rca
-      actionPlan: $actionPlan
       results: $results
       financialImpact: $financialImpact
       costCenter: $costCenter

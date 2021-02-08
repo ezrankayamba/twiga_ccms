@@ -13,7 +13,7 @@ import { NavLink, Redirect } from "react-router-dom";
 import { attachmentsChangeHandler } from "../../helpers/FileUpload";
 import { COMPLAINTS_FILTER_VARS } from "../../constants";
 
-function NewComplaintRegisterPage({}) {
+function NewComplaintRegisterPage({ }) {
   let natures = useQuery(NATURES);
   let locations = useQuery(LOCATIONS);
   const [redirect, setRedirect] = useState(null);
@@ -43,80 +43,92 @@ function NewComplaintRegisterPage({}) {
     const { value, name } = e.target;
     setFormData({ ...formData, [name]: value });
   }
+  const inputsConf = {
+    type: "textarea",
+    onChange: handleChange,
+    required: "required",
+    maxLength: "200",
+    help: "Max 200 characters",
+  };
   return redirect ? (
     <Redirect to={redirect} />
   ) : (
-    <div>
-      <div className="toolbar">
-        <div className="titlebar">
-          <NavLink to="/complaints" className="btn btn-light mr-1">
-            <MatIcon name="keyboard_arrow_left" />
-          </NavLink>
-          <h5>Register New Complaint</h5>
+      <div>
+        <div className="toolbar">
+          <div className="titlebar">
+            <NavLink to="/complaints" className="btn btn-light mr-1">
+              <MatIcon name="keyboard_arrow_left" />
+            </NavLink>
+            <h5>Register New Complaint</h5>
+          </div>
         </div>
-      </div>
-      {loading && <p>Sending ....</p>}
-      <form className="form" onSubmit={handleSubmit}>
-        <div className="form-grid-2">
-          <div>
-            <Input
-              name="clientName"
-              label="Client Name"
-              onChange={handleChange}
-              required
-            />
-            <Select
-              name="location"
-              label="Location"
-              options={locationOptions}
-              onChange={handleChange}
-              required
-            />
-            <Select
-              name="nature"
-              label="Nature"
-              options={natureOptions}
-              onChange={handleChange}
-              required
-            />
+        {loading && <p>Sending ....</p>}
+        <form className="form" onSubmit={handleSubmit}>
+          <div className="form-grid-2">
+            <div>
+              <Input
+                name="clientName"
+                label="Client Name"
+                onChange={handleChange}
+                required
+              />
+              <Select
+                name="location"
+                label="Location"
+                options={locationOptions}
+                onChange={handleChange}
+                required
+              />
+              <Select
+                name="nature"
+                label="Nature"
+                options={natureOptions}
+                onChange={handleChange}
+                required
+              />
 
-            <Input
-              name="openDate"
-              label="Open Date"
-              type="date"
-              onChange={handleChange}
-              required
-              max={new Date().toISOString().split("T")[0]}
-            />
+              <Input
+                name="openDate"
+                label="Open Date"
+                type="date"
+                onChange={handleChange}
+                required
+                max={new Date().toISOString().split("T")[0]}
+              />
+            </div>
+            <div className="register-right">
+              <Input
+                name="details"
+                label="Details"
+                type="textarea"
+                onChange={handleChange}
+                required
+                maxLength="300"
+                help="Max 300 characters"
+                cls="large"
+              />
+              <Input
+                name="actionPlan"
+                label="Action Plan"
+                {...inputsConf}
+              />
+              <Input
+                name="attachments"
+                type="file"
+                label="Attachments"
+                multiple
+                onChange={(e) =>
+                  attachmentsChangeHandler(e, (files) => setAttachments(files))
+                }
+              />
+            </div>
           </div>
-          <div className="register-right">
-            <Input
-              name="details"
-              label="Details"
-              type="textarea"
-              onChange={handleChange}
-              required
-              maxLength="300"
-              help="Max 300 characters"
-              cls="large"
-            />
-            <Input
-              name="attachments"
-              type="file"
-              label="Attachments"
-              multiple
-              onChange={(e) =>
-                attachmentsChangeHandler(e, (files) => setAttachments(files))
-              }
-            />
+          <div className="form-footer">
+            <button>Submit</button>
           </div>
-        </div>
-        <div className="form-footer">
-          <button>Submit</button>
-        </div>
-      </form>
-    </div>
-  );
+        </form>
+      </div>
+    );
 }
 
 export default NewComplaintRegisterPage;
