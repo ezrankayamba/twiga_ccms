@@ -242,17 +242,12 @@ class UserMutation(graphene.Mutation):
             user.last_name = last_name
             user.save()
         else:
-            user = User.objects.create_user(username,
-                                            email,
-                                            password=DEFAULT_PASS)
+            user = User.objects.create_user(username, email, password=DEFAULT_PASS)
             user.first_name = first_name
             user.last_name = last_name
             user.save()
-            url = 'https://ccms.nezatech.co.tz'
-            gmail.send_registered(id,
-                                  user.email,
-                                  def_pass=DEFAULT_PASS,
-                                  base_url=url)
+            url = 'http://10.171.40.158:8083'
+            gmail.send_registered(user.username, user.email, def_pass=DEFAULT_PASS, base_url=url)
 
         return UserMutation(user=user)
 

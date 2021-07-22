@@ -24,7 +24,7 @@ def send_assign(id, dest, base_url='http://localhost:8000'):
         smtp.send_message(msg)
 
 
-def send_registered(id, dest, def_pass, base_url='http://localhost:8000'):
+def send_registered(username, dest, def_pass, base_url='http://localhost:8000'):
     msg = EmailMessage()
     msg['Subject'] = 'User Registration'
     msg['From'] = f'Twiga - CCMS<{EMAIL_ADDRESS}>'
@@ -33,7 +33,8 @@ def send_registered(id, dest, def_pass, base_url='http://localhost:8000'):
 
     with open('registered.html', 'r') as f:
         html = f.read()
-        html = html.replace('DEFAULT_PASS', f'{id}')
+        html = html.replace('USERNAME', f'{username}')
+        html = html.replace('DEFAULT_PASS', f'{def_pass}')
         html = html.replace('DETAIL_URL', base_url)
     msg.add_alternative(html, subtype='html')
 
