@@ -23,13 +23,13 @@ def params_complaints_filter(kwargs_in):
         params['status'] = kwargs['status']
 
     if 'date_from' in kwargs:
-        params['open_date__gt'] = kwargs['date_from']
+        params['open_date__gte'] = kwargs['date_from']
     else:
-        params['open_date__gt'] = datetime.date.today()
+        params['open_date__gte'] = datetime.date.today()
     if 'date_to' in kwargs:
-        params['open_date__lt'] = kwargs['date_to']
+        params['open_date__lte'] = kwargs['date_to']
     else:
-        params['open_date__lt'] = datetime.date.today()
+        params['open_date__lte'] = datetime.date.today()
 
     return params
 
