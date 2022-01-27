@@ -27,9 +27,9 @@ def params_complaints_filter(kwargs_in):
     else:
         params['open_date__gt'] = datetime.date.today()
     if 'date_to' in kwargs:
-        params['open_date__lt'] = kwargs['date_to'] + datetime.timedelta(days=1)
+        params['open_date__lt'] = kwargs['date_to']
     else:
-        params['open_date__lt'] = datetime.date.today() + datetime.timedelta(days=1)
+        params['open_date__lt'] = datetime.date.today()
 
     return params
 
