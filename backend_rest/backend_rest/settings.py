@@ -15,7 +15,6 @@ with open("config.json") as fp:
 SECRET_KEY = config.get("secret_key")
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = ")2duug*v%+lhllfoz_zpr&l4tq*=z0x-o+4_$2773&3ur*=s1v"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
