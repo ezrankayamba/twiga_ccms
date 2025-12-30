@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 config: dict = {}
 with open("config.json") as fp:
-    config = json.load(fp.read())
+    config = json.load(fp)
 
 SECRET_KEY = config.get("secret_key")
 
